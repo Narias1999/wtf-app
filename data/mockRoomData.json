@@ -1,0 +1,36 @@
+{
+  "teams": [
+    {
+      "owner": "Nicolas Arias",
+      "team": [
+        { "name": "Nairo Quintana", "country": "CO" },
+        { "name": "Wout Van Aert", "country": "BE" },
+        { "name": "Matej Mohoric", "country": "SI" },
+        { "name": "Alberto Contador", "country": "ES" },
+        { "name": "Rui Costa", "country": "PT" },
+        { "name": "Daniel Felipe Martinez", "country": "CO" }
+      ],
+      "ready": true
+    },
+    {
+      "owner": "Rolf Veldman",
+      "team": [
+        { "name": "Mathieu Van der Poel", "country": "NL" },
+        { "name": "Jonas Vingegaard", "country": "DK" },
+        { "name": "Juan Ayuso", "country": "ES" },
+        { "name": "Ivan Garcia Cortina", "country": "ES" },
+        { "name": "Tadej Pogacar", "country": "SI" },
+        { "name": "Primoz Roglic", "country": "SI" }
+      ],
+      "ready": true
+    },
+    {
+      "owner": "German Gonzalez",
+      "team": [
+        { "name": "Lucho Herrera", "country": "CO" },
+        { "name": "Lance Armstrong", "country": "US" }
+      ],
+      "ready": false
+    }
+  ]
+}

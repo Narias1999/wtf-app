@@ -1,0 +1,30 @@
+[
+  {
+    "name": "For 100 bucks",
+    "season": 2024,
+    "members": [
+      "Rolf Veldman",
+      "Nicolas Arias",
+      "German Gonzalez",
+      "Nathalia"
+    ]
+  },
+  {
+    "name": "Ineos",
+    "season": 2024,
+    "members": [
+      "Tom Pidcock",
+      "Geraint Thomas",
+      "Egan Berlan"
+    ]
+  },
+  {
+    "name": "Actual Managers",
+    "season": 2022,
+    "members": [
+      "Patrick Lefevre",
+      "Euzebio Unzué",
+      "Giuseppe Acquadro"
+    ]
+  }
+]
