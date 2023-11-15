@@ -58,7 +58,7 @@ export default function Rooms() {
     return (
       <View style={{ padding: 10, position: 'relative', flex: 1 }}>
         <View style={styles.titleContainer}>
-          <Text variant="titleLarge">Rooms</Text>
+          <Text variant="titleLarge">Seassons</Text>
         </View>
         <View style={styles.cardsContainer}>
           {

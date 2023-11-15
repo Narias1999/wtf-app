@@ -7,6 +7,7 @@ import { useState } from 'react';
 import Colors from '../../constants/Colors';
 
 import roomData from '../../data/mockRoomData.json';
+import { useRouter } from 'expo-router';
 
 interface Cyclist {
   name: string;
@@ -22,7 +23,6 @@ interface Team {
 const RivalTeam = ({ owner, team, ready }: Team) => {
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? 'light'];
-  const [approved, setApproved] = useState(false);
 
   return (
     <Surface elevation={1} style={[styles.teamSurface]}>
@@ -30,12 +30,7 @@ const RivalTeam = ({ owner, team, ready }: Team) => {
         <Text variant="titleMedium">{owner}</Text>
 
         {
-          ready ? (
-            <View style={{ backgroundColor: 'transparent', flexDirection: 'row', gap: 10, alignItems: 'center' }}>
-              <Text variant="titleSmall">Approve</Text>
-              <Switch color={colors.success} onChange={() => setApproved(!approved)} value={approved} />
-            </View>
-          ) : (
+          !ready && (
             <Text variant="titleSmall" style={{ color: colors.error }}>Not Ready</Text>
           )
         }
@@ -57,9 +52,14 @@ const RivalTeam = ({ owner, team, ready }: Team) => {
 };
 
 export default function TeamSelection() {
+  const router = useRouter();
   const colorScheme = useColorScheme();
   const [ready, setReady] = useState(false);
   const colors = Colors[colorScheme ?? 'light'];
+
+  const startSeason = () => {
+    router.push('/leaderboard');
+  }
 
   return (
     <View style={{ paddingTop: 20, paddingHorizontal: 20, flex: 1 }}>
@@ -71,7 +71,7 @@ export default function TeamSelection() {
       </View>
       <Divider style={{ marginVertical: 30 }} />
       <View style={{ flex: 1 }}>
-        <Text variant="titleLarge" style={{ marginBottom: 10, textAlign: 'center' }}>Room Teams</Text>
+        <Text variant="titleLarge" style={{ marginBottom: 10, textAlign: 'center' }}>Managers</Text>
 
         <ScrollView>
           <View style={{ paddingBottom: 20, paddingHorizontal: 10 }}>
@@ -84,7 +84,7 @@ export default function TeamSelection() {
         </ScrollView>
 
         <View style={styles.buttonContainer}>
-          <Button mode="contained" onPress={() => {}}>Start Season</Button>
+          <Button mode="contained" onPress={startSeason}>Start Season</Button>
         </View>
       </View>
     </View>

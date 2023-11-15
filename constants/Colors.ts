@@ -4,6 +4,7 @@ const tintColorDark = '#fff';
 const shared = {
   success: '#2ecc71',
   error: '#e74c3c',
+  primary: 'purple'
 }
 
 export default {

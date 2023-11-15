@@ -15,11 +15,11 @@ export default function NewRoom() {
       <View style={{ paddingTop: statusBarHeight, flex: 1, paddingHorizontal: 10 }}>
         <KeyboardAvoidingView style={styles.container}>
           <View style={styles.titleContainer}>
-            <Text variant="titleLarge">Create a new Room</Text>
+            <Text variant="titleLarge">Create a new season</Text>
           </View>
           <TextInput mode="outlined" label="Name" />
           <View style={styles.newMembersSection}>
-            <Text variant="titleLarge" style={{ paddingBottom: 20 }}>Invite Members</Text>
+            <Text variant="titleLarge" style={{ paddingBottom: 20 }}>Invite Managers</Text>
             <MembersInvite />
           </View>
 

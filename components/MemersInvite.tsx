@@ -35,7 +35,8 @@ export default function MembersInvite() {
         <TextInput
           mode="outlined"
           value={email}
-          label="Username"
+          label="Email"
+          keyboardType="email-address"
           onChangeText={(text) => setEmail(text)}
           style={{ flex: 1, marginRight: 10 }}
         />
