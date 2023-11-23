@@ -25,7 +25,7 @@ export default function Season() {
       headerTitle: 'Season Name'
     }}>
       <Tabs.Screen name="leaderboard" options={getConfig('GC', 'flag-checkered')} />
-      <Tabs.Screen name="riders" options={getConfig('Riders', 'bike')} />
+      <Tabs.Screen name="riders" options={getConfig('My Team', 'bike')} />
       <Tabs.Screen name="stats" options={getConfig('Results', 'chart-bar')} />
     </Tabs>
   );

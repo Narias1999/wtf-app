@@ -40,7 +40,6 @@ const RivalTeam = ({ owner, team, ready }: Team) => {
         {
           team.map((cyclist: Cyclist) => (
             <Chip avatar={<Flag
-            
               code={cyclist.country}
               size={32}
             />} key={cyclist.name}>{cyclist.name}</Chip>
