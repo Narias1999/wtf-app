@@ -52,7 +52,8 @@ export default function News() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10
+    padding: 10,
+    paddingTop: 30
   },
   gcContainer: {
 

@@ -18,7 +18,7 @@ export default {
   },
   dark: {
     text: '#fff',
-    background: '#fff',
+    background: '#000',
     tint: tintColorDark,
     tabIconDefault: '#ccc',
     tabIconSelected: tintColorDark,

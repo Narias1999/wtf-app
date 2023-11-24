@@ -1,0 +1,234 @@
+[
+  {
+    "name": "Paris Nice",
+    "country": "FR",
+    "category": "2.WC",
+    "results": [
+      {
+        "type": "stage",
+        "name": "Amsterdam - Paris",
+        "results": [
+          { "name": "Mark Cavendish", "country": "GB", "points": 20 },
+          { "name": "Tadej Pogacar", "country": "SI", "points": 15 },
+          { "name": "Mathieu Van der Poel", "country": "NL", "points": 10 },
+          { "name": "Jonas Vingegaard", "country": "DK", "points": 5 },
+          { "name": "Primoz Roglic", "country": "SI", "points": 3 },
+          { "name": "Nairo Quintana", "country": "CO", "points": 1 },
+          { "name": "Juan Ayuso", "country": "ES", "points": 0 },
+          { "name": "Daniel Felipe Martinez", "country": "CO", "points": 0 },
+          { "name": "Egan Bernal", "country": "CO", "points": 0 }
+        ]
+      },
+      {
+        "type": "stage",
+        "name": "Amsterdam - Paris",
+        "results": [
+          { "name": "Mark Cavendish", "country": "GB", "points": 20 },
+          { "name": "Tadej Pogacar", "country": "SI", "points": 15 },
+          { "name": "Mathieu Van der Poel", "country": "NL", "points": 10 },
+          { "name": "Jonas Vingegaard", "country": "DK", "points": 5 },
+          { "name": "Primoz Roglic", "country": "SI", "points": 3 },
+          { "name": "Nairo Quintana", "country": "CO", "points": 1 },
+          { "name": "Juan Ayuso", "country": "ES", "points": 0 },
+          { "name": "Daniel Felipe Martinez", "country": "CO", "points": 0 },
+          { "name": "Egan Bernal", "country": "CO", "points": 0 }
+        ]
+      },
+      {
+        "type": "stage",
+        "name": "Amsterdam - Paris",
+        "results": [
+          { "name": "Mark Cavendish", "country": "GB", "points": 20 },
+          { "name": "Tadej Pogacar", "country": "SI", "points": 15 },
+          { "name": "Mathieu Van der Poel", "country": "NL", "points": 10 },
+          { "name": "Jonas Vingegaard", "country": "DK", "points": 5 },
+          { "name": "Primoz Roglic", "country": "SI", "points": 3 },
+          { "name": "Nairo Quintana", "country": "CO", "points": 1 },
+          { "name": "Juan Ayuso", "country": "ES", "points": 0 },
+          { "name": "Daniel Felipe Martinez", "country": "CO", "points": 0 },
+          { "name": "Egan Bernal", "country": "CO", "points": 0 }
+        ]
+      },
+      {
+        "type": "stage",
+        "name": "Amsterdam - Paris",
+        "results": [
+          { "name": "Mark Cavendish", "country": "GB", "points": 20 },
+          { "name": "Tadej Pogacar", "country": "SI", "points": 15 },
+          { "name": "Mathieu Van der Poel", "country": "NL", "points": 10 },
+          { "name": "Jonas Vingegaard", "country": "DK", "points": 5 },
+          { "name": "Primoz Roglic", "country": "SI", "points": 3 },
+          { "name": "Nairo Quintana", "country": "CO", "points": 1 },
+          { "name": "Juan Ayuso", "country": "ES", "points": 0 },
+          { "name": "Daniel Felipe Martinez", "country": "CO", "points": 0 },
+          { "name": "Egan Bernal", "country": "CO", "points": 0 }
+        ]
+      },
+      {
+        "type": "stage",
+        "name": "Amsterdam - Paris",
+        "results": [
+          { "name": "Mark Cavendish", "country": "GB", "points": 20 },
+          { "name": "Tadej Pogacar", "country": "SI", "points": 15 },
+          { "name": "Mathieu Van der Poel", "country": "NL", "points": 10 },
+          { "name": "Jonas Vingegaard", "country": "DK", "points": 5 },
+          { "name": "Primoz Roglic", "country": "SI", "points": 3 },
+          { "name": "Nairo Quintana", "country": "CO", "points": 1 },
+          { "name": "Juan Ayuso", "country": "ES", "points": 0 },
+          { "name": "Daniel Felipe Martinez", "country": "CO", "points": 0 },
+          { "name": "Egan Bernal", "country": "CO", "points": 0 }
+        ]
+      },
+      {
+        "type": "stage",
+        "name": "Amsterdam - Paris",
+        "results": [
+          { "name": "Mark Cavendish", "country": "GB", "points": 20 },
+          { "name": "Tadej Pogacar", "country": "SI", "points": 15 },
+          { "name": "Mathieu Van der Poel", "country": "NL", "points": 10 },
+          { "name": "Jonas Vingegaard", "country": "DK", "points": 5 },
+          { "name": "Primoz Roglic", "country": "SI", "points": 3 },
+          { "name": "Nairo Quintana", "country": "CO", "points": 1 },
+          { "name": "Juan Ayuso", "country": "ES", "points": 0 },
+          { "name": "Daniel Felipe Martinez", "country": "CO", "points": 0 },
+          { "name": "Egan Bernal", "country": "CO", "points": 0 }
+        ]
+      },
+      {
+        "type": "stage",
+        "name": "Amsterdam - Paris",
+        "results": [
+          { "name": "Mark Cavendish", "country": "GB", "points": 20 },
+          { "name": "Tadej Pogacar", "country": "SI", "points": 15 },
+          { "name": "Mathieu Van der Poel", "country": "NL", "points": 10 },
+          { "name": "Jonas Vingegaard", "country": "DK", "points": 5 },
+          { "name": "Primoz Roglic", "country": "SI", "points": 3 },
+          { "name": "Nairo Quintana", "country": "CO", "points": 1 },
+          { "name": "Juan Ayuso", "country": "ES", "points": 0 },
+          { "name": "Daniel Felipe Martinez", "country": "CO", "points": 0 },
+          { "name": "Egan Bernal", "country": "CO", "points": 0 }
+        ]
+      },
+      {
+        "type": "stage",
+        "name": "Amsterdam - Paris",
+        "results": [
+          { "name": "Mark Cavendish", "country": "GB", "points": 20 },
+          { "name": "Tadej Pogacar", "country": "SI", "points": 15 },
+          { "name": "Mathieu Van der Poel", "country": "NL", "points": 10 },
+          { "name": "Jonas Vingegaard", "country": "DK", "points": 5 },
+          { "name": "Primoz Roglic", "country": "SI", "points": 3 },
+          { "name": "Nairo Quintana", "country": "CO", "points": 1 },
+          { "name": "Juan Ayuso", "country": "ES", "points": 0 },
+          { "name": "Daniel Felipe Martinez", "country": "CO", "points": 0 },
+          { "name": "Egan Bernal", "country": "CO", "points": 0 }
+        ]
+      },
+      {
+        "type": "gc",
+        "results": [
+          { "name": "Nairo Quintana", "country": "CO", "points": 50 },
+          { "name": "Jonas Vingegaard", "country": "DK", "points": 30 },
+          { "name": "Tadej Pogacar", "country": "SI", "points": 20 },
+          { "name": "Primoz Roglic", "country": "SI", "points": 15 },
+          { "name": "Juan Ayuso", "country": "ES", "points": 13 },
+          { "name": "Mark Cavendish", "country": "GB", "points": 10 },
+          { "name": "Mathieu Van der Poel", "country": "NL", "points": 8 },
+          { "name": "Daniel Felipe Martinez", "country": "CO", "points": 5 },
+          { "name": "Egan Bernal", "country": "CO", "points": 0 }
+        ]
+      },
+      {
+        "type": "mountain",
+        "results": [
+          { "name": "Nairo Quintana", "country": "CO", "points": 10 },
+          { "name": "Jonas Vingegaard", "country": "DK", "points": 8 },
+          { "name": "Tadej Pogacar", "country": "SI", "points": 5 },
+          { "name": "Primoz Roglic", "country": "SI", "points": 3 },
+          { "name": "Juan Ayuso", "country": "ES", "points": 0 },
+          { "name": "Mark Cavendish", "country": "GB", "points": 0 },
+          { "name": "Mathieu Van der Poel", "country": "NL", "points": 0 },
+          { "name": "Daniel Felipe Martinez", "country": "CO", "points": 0 },
+          { "name": "Egan Bernal", "country": "CO", "points": 0 }
+        ]
+      },
+      {
+        "type": "sprints",
+        "results": [
+          { "name": "Nairo Quintana", "country": "CO", "points": 10 },
+          { "name": "Jonas Vingegaard", "country": "DK", "points": 8 },
+          { "name": "Tadej Pogacar", "country": "SI", "points": 5 },
+          { "name": "Primoz Roglic", "country": "SI", "points": 3 },
+          { "name": "Juan Ayuso", "country": "ES", "points": 0 },
+          { "name": "Mark Cavendish", "country": "GB", "points": 0 },
+          { "name": "Mathieu Van der Poel", "country": "NL", "points": 0 },
+          { "name": "Daniel Felipe Martinez", "country": "CO", "points": 0 },
+          { "name": "Egan Bernal", "country": "CO", "points": 0 }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Amstel Gold Race",
+    "country": "NL",
+    "category": "1.WC",
+    "results": [
+      {
+        "type": "gc",
+        "results": [
+          { "name": "Mark Cavendish", "country": "GB", "points": 50 },
+          { "name": "Tadej Pogacar", "country": "SI", "points": 30 },
+          { "name": "Mathieu Van der Poel", "country": "NL", "points": 25 },
+          { "name": "Jonas Vingegaard", "country": "DK", "points": 15 },
+          { "name": "Primoz Roglic", "country": "SI", "points": 10 },
+          { "name": "Nairo Quintana", "country": "CO", "points": 5 },
+          { "name": "Juan Ayuso", "country": "ES", "points": 0 },
+          { "name": "Daniel Felipe Martinez", "country": "CO", "points": 0 },
+          { "name": "Egan Bernal", "country": "CO", "points": 0 }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Paris Rubaix",
+    "country": "FR",
+    "category": "1.WC",
+    "results": [
+      {
+        "type": "gc",
+        "results": [
+          { "name": "Mark Cavendish", "country": "GB", "points": 50 },
+          { "name": "Tadej Pogacar", "country": "SI", "points": 30 },
+          { "name": "Mathieu Van der Poel", "country": "NL", "points": 25 },
+          { "name": "Jonas Vingegaard", "country": "DK", "points": 15 },
+          { "name": "Primoz Roglic", "country": "SI", "points": 10 },
+          { "name": "Nairo Quintana", "country": "CO", "points": 5 },
+          { "name": "Juan Ayuso", "country": "ES", "points": 0 },
+          { "name": "Daniel Felipe Martinez", "country": "CO", "points": 0 },
+          { "name": "Egan Bernal", "country": "CO", "points": 0 }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Fleche Wallone",
+    "country": "NL",
+    "category": "1.WC",
+    "results": [
+      {
+        "type": "gc",
+        "results": [
+          { "name": "Mark Cavendish", "country": "GB", "points": 50 },
+          { "name": "Tadej Pogacar", "country": "SI", "points": 30 },
+          { "name": "Mathieu Van der Poel", "country": "NL", "points": 25 },
+          { "name": "Jonas Vingegaard", "country": "DK", "points": 15 },
+          { "name": "Primoz Roglic", "country": "SI", "points": 10 },
+          { "name": "Nairo Quintana", "country": "CO", "points": 5 },
+          { "name": "Juan Ayuso", "country": "ES", "points": 0 },
+          { "name": "Daniel Felipe Martinez", "country": "CO", "points": 0 },
+          { "name": "Egan Bernal", "country": "CO", "points": 0 }
+        ]
+      }
+    ]
+  }
+]
