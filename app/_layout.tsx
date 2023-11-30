@@ -6,7 +6,8 @@ import { useEffect } from 'react';
 import { useColorScheme, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Provider } from 'react-native-paper';
 import { Provider as ReduxProvider } from 'react-redux';
-import store from '../store';
+import { PersistGate } from 'redux-persist/integration/react';
+import store, { persistor } from '../store';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -46,13 +47,15 @@ function RootLayoutNav() {
 
   return (
     <ReduxProvider store={store}>
-      <Provider>
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
-            <Slot />
-          </TouchableWithoutFeedback>
-        </ThemeProvider>
-      </Provider>
+      <PersistGate persistor={persistor}>
+        <Provider>
+          <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
+              <Slot />
+            </TouchableWithoutFeedback>
+          </ThemeProvider>
+        </Provider>
+      </PersistGate>
     </ReduxProvider>
   );
 }

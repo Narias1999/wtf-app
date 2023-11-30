@@ -4,6 +4,9 @@ import { StyleSheet, KeyboardAvoidingView, Platform, View as TransparentView, To
 import { TextInput, Text, Button, useTheme, Divider } from 'react-native-paper';
 import { View } from '../components/Themed';
 import { useLoginMutation } from '../api/auth';
+import { setAuth } from '../store/features/auth';
+import { useDispatch } from 'react-redux';
+import { useRouter } from 'expo-router';
 
 interface LoginForm {
   email: string;
@@ -18,7 +21,9 @@ const defaultFormValues = {
 export default function Login() {
   const theme = useTheme();
   const passwordInput = useRef<RNTextInput | null>(null);
-  const [login, { isError, error: loginError, isLoading }] = useLoginMutation();
+  const [login, { data, isError, isSuccess, error: loginError, isLoading }] = useLoginMutation();
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   const [form, setForm] = useState<LoginForm>({... defaultFormValues });
   const [error, setError] = useState('');
@@ -28,6 +33,13 @@ export default function Login() {
       setError('Your email or password is wrong, please try again');
     }
   }, [isError]);
+
+  useEffect(() => {
+    if (isSuccess && data) {
+      dispatch(setAuth(data));
+      router.replace('/');
+    }
+  }, [isSuccess]);
 
   const handleUpdateForm = (key: keyof LoginForm) => (value: string) => {
     setForm({

@@ -2,8 +2,8 @@ import { StyleSheet } from 'react-native';
 import { Text, Card, DataTable, Avatar } from 'react-native-paper';
 import Flag from 'react-native-flags';
 
-import myTeamData from '../../data/myTeam.json';
-import { View } from '../../components/Themed';
+import myTeamData from '../../../data/myTeam.json';
+import { View } from '../../../components/Themed';
 import { useMemo } from 'react';
 
 interface RiderPoints {

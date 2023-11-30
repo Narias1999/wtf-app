@@ -3,9 +3,9 @@ import { Card, Text, Divider, DataTable } from 'react-native-paper';
 import DropDown from 'react-native-paper-dropdown';
 import Flag from 'react-native-flags';
 
-import { View } from '../../components/Themed';
+import { View } from '../../../components/Themed';
 
-import results from '../../data/results.json';
+import results from '../../../data/results.json';
 import { useMemo, useState } from 'react';
 
 interface IndividualResult {

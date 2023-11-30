@@ -1,7 +1,7 @@
 import { StyleSheet, useColorScheme } from 'react-native';
 import { Tabs } from 'expo-router/tabs';
 import { Icon } from 'react-native-paper';
-import Colors from '../../constants/Colors';
+import Colors from '../../../constants/Colors';
 
 
 export default function Season() {

@@ -1,11 +1,17 @@
 import { StyleSheet } from 'react-native'
 import React from 'react'
-import { Slot, Stack } from 'expo-router'
-import { View } from '../../components/Themed'
+import { Redirect, Stack } from 'expo-router'
 import { IconButton, Text, useTheme } from 'react-native-paper'
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../store/features/auth';
 
 export default function Layout() {
   const theme = useTheme();
+  const user = useSelector(selectUser);
+
+  if (!user) {
+    return <Redirect href="/login" />
+  }
 
   const colorStyle = { color: theme.colors.inversePrimary };
 
