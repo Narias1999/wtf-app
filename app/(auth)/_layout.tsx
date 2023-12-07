@@ -22,7 +22,7 @@ export default function Layout() {
     },
     headerShadowVisible: false,
     headerBackTitleVisible: false,
-    headerLeft: () => <IconButton icon="chevron-left" iconColor={theme.colors.inversePrimary} size={20} onPress={() => {}} />,
+    headerRight: () => <IconButton icon="bell" iconColor={theme.colors.inversePrimary} size={20} onPress={() => {}} />,
     headerTitle: () => <Text variant="titleMedium" style={colorStyle}>WTF</Text>,
 }
 

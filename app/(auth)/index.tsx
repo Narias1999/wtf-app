@@ -5,6 +5,7 @@ import { View } from '../../components/Themed';
 
 import rooms from '../../data/mockRooms.json';
 import { useRouter } from 'expo-router';
+import { ScrollView } from 'react-native-gesture-handler';
 
 interface Room {
   members: string[];
@@ -61,9 +62,11 @@ export default function Rooms() {
           <Text variant="titleLarge">Seassons</Text>
         </View>
         <View style={styles.cardsContainer}>
-          {
-            rooms.map((room: Room) => <RoomCard key={room.name} {...room} />)
-          }
+          <ScrollView style={{ flex: 1 }}>
+            {
+              rooms.map((room: Room) => <RoomCard key={room.name} {...room} />)
+            }
+          </ScrollView>
         </View>
         <FAB
           icon="plus"
@@ -90,7 +93,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   cardsContainer: {
-
+    flex: 1
   },
   card: {
     marginBottom: 15
