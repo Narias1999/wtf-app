@@ -1,17 +1,11 @@
 import { StyleSheet, TouchableOpacity, View as NativeView } from 'react-native';
-import { Button, Card, Text, FAB, Chip } from 'react-native-paper';
+import { Button, Card, Text, FAB, Chip, ActivityIndicator } from 'react-native-paper';
 
 import { View } from '../../components/Themed';
 
-import rooms from '../../data/mockRooms.json';
 import { useRouter } from 'expo-router';
 import { ScrollView } from 'react-native-gesture-handler';
-
-interface Room {
-  members: string[];
-  name: string;
-  season: number;
-}
+import { Room, useGetMyRoomsQuery } from '../../api/rooms';
 
 const EmptyState = ({ onCreateNew }: { onCreateNew: () => void }) => ( <View style={styles.emptyStateContainer}>
   <Text variant="titleMedium" style={styles.noRoomsText}>You are not part of any room yet.</Text>
@@ -19,7 +13,7 @@ const EmptyState = ({ onCreateNew }: { onCreateNew: () => void }) => ( <View sty
   <Button mode="elevated" onPress={onCreateNew}>Create one</Button>
 </View>);
 
-const RoomCard = ({ members, name, season }: Room) => {
+const RoomCard = (room: Room) => {
   const router = useRouter();
 
   return (
@@ -28,14 +22,14 @@ const RoomCard = ({ members, name, season }: Room) => {
         <Card>
           <Card.Content>
             <NativeView style={styles.cardTitle}>
-              <Text variant="titleLarge">{name}</Text>
-              <Chip mode="outlined">{season}</Chip>
+              <Text variant="titleLarge">{room.name}</Text>
+              <Chip mode="outlined">2024</Chip>
             </NativeView>
             <NativeView style={styles.membersContainer}>
               {
-                members.map(member => (
-                  <NativeView style={styles.member} key={member}>
-                    <Chip key={member}>{member}</Chip>
+                room.teams.map(team => (
+                  <NativeView style={styles.member} key={team.id}>
+                    <Chip>{team.user.username}</Chip>
                   </NativeView>
                 ))
               }
@@ -48,14 +42,22 @@ const RoomCard = ({ members, name, season }: Room) => {
 }
 
 export default function Rooms() {
+  const { data: rooms, isLoading } = useGetMyRoomsQuery('');
   const router = useRouter();
-  const hasRooms = true;
 
   const handleNewRoom = () => {
     router.push('/newRoom');
   };
 
-  if (hasRooms) {
+  if (isLoading) {
+    return (
+      <View style={styles.emptyStateContainer}>
+        <ActivityIndicator />
+      </View>
+    )
+  }
+
+  if (rooms?.length) {
     return (
       <View style={{ padding: 10, position: 'relative', flex: 1 }}>
         <View style={styles.titleContainer}>
@@ -64,7 +66,7 @@ export default function Rooms() {
         <View style={styles.cardsContainer}>
           <ScrollView style={{ flex: 1 }}>
             {
-              rooms.map((room: Room) => <RoomCard key={room.name} {...room} />)
+              rooms.map((room) => <RoomCard key={room.name} {...room} />)
             }
           </ScrollView>
         </View>
