@@ -1,5 +1,4 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import { authenticatedBaseQuery } from './index';
+import { api } from './index';
 import { User } from './auth';
 
 export interface Team {
@@ -12,6 +11,7 @@ export interface Team {
 export interface Room {
   id: number,
   name: string,
+  user_admin?: User,
   started_at: string | null,
   createdAt: string | null,
   updatedAt: string | null,
@@ -20,16 +20,12 @@ export interface Room {
 };
 
 
-export const roomsApi = createApi({
-  reducerPath: 'authApi',
-  baseQuery: authenticatedBaseQuery,
+export const roomsApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getMyRooms: builder.query<Room[], unknown>({
       query: () => '/rooms',
     }),
   }),
 });
-
-
 
 export const { useGetMyRoomsQuery } = roomsApi;
