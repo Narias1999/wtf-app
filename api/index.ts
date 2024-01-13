@@ -7,7 +7,6 @@ const baseQuery = fetchBaseQuery({
   baseUrl,
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.jwt;
-    console.log('token', token)
     if (token) {
       headers.set('Authorization', `Bearer ${token}`);
     }
@@ -15,7 +14,7 @@ const baseQuery = fetchBaseQuery({
   }
 });
 
-const baseQueryWithRetry = retry(baseQuery, { maxRetries: 6 })
+const baseQueryWithRetry = retry(baseQuery, { maxRetries: 3 })
 
 export const api = createApi({
   reducerPath: 'wtfApi',
