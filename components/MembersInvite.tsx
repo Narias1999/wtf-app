@@ -2,29 +2,33 @@ import { useState } from "react";
 import { StyleSheet, View } from "react-native"
 import { Chip, IconButton, TextInput } from "react-native-paper";
 
+type Props = {
+  value: string[],
+  onChange: (value: string[]) => void,
+}
 
-export default function MembersInvite() {
-  const [emails, setEmails] = useState<string[]>([]);
+
+export default function MembersInvite({value, onChange}: Props) {
   const [email, setEmail] = useState('');
 
   const handleAddMember = () => {
-    if (!emails.includes(email)) {
-      setEmails([...emails, email]);
+    if (!value.includes(email)) {
+      onChange([...value, email]);
     }
     setEmail('');
   }
 
   const removeMember = (email: string) => {
-    setEmails(emails.filter(e => e !== email));
+    onChange(value.filter(e => e !== email));
   }
 
   return (
     <View>
       {
-        emails.length > 0 && (
+        value.length > 0 && (
           <View style={styles.membersChipsContainer}>
             {
-              emails.map(email => (
+              value.map(email => (
                 <Chip style={styles.emailItem} key={email} onClose={() => removeMember(email)}>{email}</Chip>
               ))
             }
