@@ -4,6 +4,7 @@ import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { api } from '../api';
 import { authSlice } from './features/auth';
+import { invitationsSlice } from './features/inivitations';
 
 const persistConfig = {
   key: 'root',
@@ -13,6 +14,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   [api.reducerPath]: api.reducer,
   auth: authSlice.reducer,
+  invitations: invitationsSlice.reducer,
 });
 
 
