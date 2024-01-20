@@ -1,11 +1,21 @@
 import { api } from './index';
 import { User } from './auth';
 
+export interface Rider {
+  id: number,
+  createdAt: string,
+  updatedAt: string,
+  picture: string,
+  name: string,
+  country: string,
+}
+
 export interface Team {
   id: number,
   createdAt: string,
   updatedAt: string,
   user: User
+  ridres: Rider[]
 }
 
 export interface Room {
@@ -25,7 +35,22 @@ export const roomsApi = api.injectEndpoints({
     getMyRooms: builder.query<Room[], unknown>({
       query: () => '/rooms',
     }),
+    getRoomById: builder.query<Room, unknown>({
+      query: (id) => `/rooms/${id}`,
+    }),
+    createRoom: builder.mutation<Room, unknown>({
+      query: ({ name, invitations }) => {
+        return {
+          url: '/rooms',
+          method: 'POST',
+          body: {
+            name,
+            invitations
+          }
+        }
+      },
+    }),
   }),
 });
 
-export const { useGetMyRoomsQuery } = roomsApi;
+export const { useCreateRoomMutation, useGetRoomByIdQuery, useGetMyRoomsQuery } = roomsApi;
