@@ -1,20 +1,30 @@
 import { StyleSheet, useColorScheme} from 'react-native'
-import React from 'react'
-import { Redirect, Tabs } from 'expo-router'
+import { Redirect, Tabs, router } from 'expo-router'
 import { Icon } from 'react-native-paper';
-import { IconButton, Text, useTheme } from 'react-native-paper'
-import { useSelector } from 'react-redux';
+import { IconButton, Text, useTheme, List } from 'react-native-paper'
+import { useSelector, useDispatch } from 'react-redux';
 
 import { selectUser } from '../../store/features/auth';
+import { setInvitations, selectInvitations } from '../../store/features/inivitations';
 import { useGetMyInvitationsQuery } from '../../api/invitations';
 import Colors from '../../constants/Colors';
+import { View } from '../../components/Themed';
+import { useEffect } from 'react';
 
 export default function Layout() {
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? 'light'];
   const theme = useTheme();
   const user = useSelector(selectUser);
-  const { data, isLoading } = useGetMyInvitationsQuery('');
+  const invitations = useSelector(selectInvitations)
+  const dispatch = useDispatch()
+  const { data, isLoading, isSuccess } = useGetMyInvitationsQuery('');
+
+  useEffect(()=> {
+    if(isSuccess && data) {
+      dispatch(setInvitations({ invitations: data.data}))
+    }
+  }, [isSuccess, data])
 
   const getConfig = (title: string, icon: string) => ({
     tabBarLabel: title,
@@ -41,7 +51,19 @@ export default function Layout() {
     },
     headerShadowVisible: false,
     headerBackTitleVisible: false,
-    headerRight: () => <IconButton icon="bell" iconColor={theme.colors.inversePrimary} size={20} onPress={() => {}} />,
+    headerRight: () => (
+      <View
+        style={styles.notificationsContainer}
+      >
+        <IconButton
+          icon="bell"
+          iconColor={theme.colors.inversePrimary}
+          size={20}
+          onPress={() => router.push('/invitations')}
+        />
+        {!!invitations?.length && <Text variant="labelSmall" style={styles.notificationsCount}>{invitations?.length}</Text>}
+      </View>
+    ),
     headerTitle: () => <Text variant="titleMedium" style={colorStyle}>WTF</Text>,
   }
 
@@ -52,8 +74,24 @@ export default function Layout() {
       <Tabs.Screen name="(season)" options={{ tabBarButton: () => null }} />
       <Tabs.Screen name="newRoom" options={{ tabBarButton: () => null }} />
       <Tabs.Screen name="teamSelection" options={{ tabBarButton: () => null }} />
+      <Tabs.Screen name="invitations" options={{ tabBarButton: () => null }} />
+
     </Tabs>
   )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  notificationsCount: {
+    backgroundColor: 'red',
+    width:15,
+    height:15,
+    right:10,
+    top:10,
+    textAlign:"center",
+    position:"absolute",
+    borderRadius:15,
+  },
+  notificationsContainer: {
+    backgroundColor: "transparent",
+  }
+})
