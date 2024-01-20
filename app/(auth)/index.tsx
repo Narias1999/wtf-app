@@ -18,7 +18,7 @@ const RoomCard = (room: Room) => {
 
   return (
     <View style={styles.card}>
-      <TouchableOpacity onPress={() => router.push('/teamSelection')}>
+      <TouchableOpacity onPress={() => router.push(`/teamSelection/${room.id}`)}>
         <Card>
           <Card.Content>
             <NativeView style={styles.cardTitle}>
@@ -66,7 +66,7 @@ export default function Rooms() {
         <View style={styles.cardsContainer}>
           <ScrollView style={{ flex: 1 }}>
             {
-              rooms.map((room) => <RoomCard key={room.name} {...room} />)
+              rooms.map((room) => <RoomCard key={room.id} {...room} />)
             }
           </ScrollView>
         </View>

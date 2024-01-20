@@ -73,7 +73,7 @@ export default function Layout() {
       <Tabs.Screen name="profile" options={getConfig('Profile', 'account')} />
       <Tabs.Screen name="(season)" options={{ tabBarButton: () => null }} />
       <Tabs.Screen name="newRoom" options={{ tabBarButton: () => null }} />
-      <Tabs.Screen name="teamSelection" options={{ tabBarButton: () => null }} />
+      <Tabs.Screen name="teamSelection/[id]" options={{ tabBarButton: () => null }} />
       <Tabs.Screen name="invitations" options={{ tabBarButton: () => null }} />
 
     </Tabs>

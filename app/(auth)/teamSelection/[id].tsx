@@ -1,48 +1,40 @@
 import { ScrollView, StyleSheet, useColorScheme } from 'react-native';
 import { Button, Chip, Divider, Surface, Switch, Text } from 'react-native-paper';
 import Flag from 'react-native-flags';
-import { View } from '../../components/Themed';
-import MembersInvite from '../../components/MemersInvite';
-import { useState } from 'react';
-import Colors from '../../constants/Colors';
+import { View } from '../../../components/Themed';
+import MembersInvite from '../../../components/MembersInvite';
+import { Fragment, useState } from 'react';
+import Colors from '../../../constants/Colors';
 
-import roomData from '../../data/mockRoomData.json';
-import { useRouter } from 'expo-router';
+import roomData from '../../../data/mockRoomData.json';
+import { useRouter, useLocalSearchParams } from 'expo-router';
+import { useGetRoomByIdQuery, Team } from '../../../api/rooms';
+import { selectUser } from '../../../store/features/auth';
+import { useSelector } from 'react-redux';
 
-interface Cyclist {
-  name: string;
-  country: string;
-}
-
-interface Team {
-  owner: string;
-  team: Cyclist[];
-  ready: boolean;
-}
-
-const RivalTeam = ({ owner, team, ready }: Team) => {
+const RivalTeam = ({ user, ridres }: Team) => {
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? 'light'];
 
   return (
     <Surface elevation={1} style={[styles.teamSurface]}>
       <View style={styles.teamContainer}>
-        <Text variant="titleMedium">{owner}</Text>
+        <Text variant="titleMedium">{user?.username}</Text>
 
-        {
+        {/* {
           !ready && (
             <Text variant="titleSmall" style={{ color: colors.error }}>Not Ready</Text>
           )
-        }
+        } */}
       </View>
       <Divider style={{ marginBottom: 20 }} />
       <View style={{ backgroundColor: 'transparent', alignItems: 'flex-start', gap: 10 }}>
         {
-          team.map((cyclist: Cyclist) => (
+          ridres?.map((cyclist) => (
             <Chip avatar={<Flag
               code={cyclist.country}
               size={32}
-            />} key={cyclist.name}>{cyclist.name}</Chip>
+            />} key={cyclist.id}>{cyclist.name}</Chip>
           ))
         }
       </View>
@@ -51,6 +43,9 @@ const RivalTeam = ({ owner, team, ready }: Team) => {
 };
 
 export default function TeamSelection() {
+  const { id } = useLocalSearchParams();
+  const { data, isLoading } = useGetRoomByIdQuery(id);
+  const user = useSelector(selectUser);
   const router = useRouter();
   const colorScheme = useColorScheme();
   const [ready, setReady] = useState(false);
@@ -62,29 +57,42 @@ export default function TeamSelection() {
 
   return (
     <View style={{ paddingTop: 20, paddingHorizontal: 20, flex: 1 }}>
-      <Text variant="titleLarge" style={{ marginBottom: 10 }}>Choose Your team</Text>
-      <MembersInvite />
-      <View style={styles.readyCheckbox}>
-        <Text variant="titleMedium">Ready</Text>
-        <Switch value={ready} onValueChange={() => setReady(!ready)} color={colors.success} />
-      </View>
-      <Divider style={{ marginVertical: 30 }} />
+      {data?.user_admin?.id === user?.id && (
+        <Fragment>
+          <Text variant="titleLarge" style={{ marginBottom: 10 }}>
+            Choose Your team
+          </Text>
+          {/* <MembersInvite /> */}
+          <View style={styles.readyCheckbox}>
+            <Text variant="titleMedium">Ready</Text>
+            <Switch
+              value={ready}
+              onValueChange={() => setReady(!ready)}
+              color={colors.success}
+            />
+          </View>
+          <Divider style={{ marginVertical: 30 }} />
+        </Fragment>
+      )}
       <View style={{ flex: 1 }}>
         <Text variant="titleLarge" style={{ marginBottom: 10, textAlign: 'center' }}>Managers</Text>
 
         <ScrollView>
           <View style={{ paddingBottom: 20, paddingHorizontal: 10 }}>
             {
-              roomData.teams.map((team: Team) => (
-                <RivalTeam key={team.owner} owner={team.owner} team={team.team} ready={team.ready} />
+              data?.teams.map((team: Team) => (
+                <RivalTeam key={team.id} {...team} />
               ))
             }
           </View>
         </ScrollView>
-
-        <View style={styles.buttonContainer}>
-          <Button mode="contained" onPress={startSeason}>Start Season</Button>
-        </View>
+        {data?.user_admin?.id === user?.id && (
+          <View style={styles.buttonContainer}>
+            <Button mode="contained" onPress={startSeason}>
+              Start Season
+            </Button>
+          </View>
+        )}
       </View>
     </View>
   )

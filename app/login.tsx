@@ -101,7 +101,7 @@ export default function Login() {
           <Divider />
           <View style={styles.registerMessage}>
             <Text variant="bodyMedium">Don't you have an account?</Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=> router.push('/register')}>
               <Text variant="bodyMedium" style={{ color: theme.colors.primary }}>Sign Up</Text>
             </TouchableOpacity>
           </View>
