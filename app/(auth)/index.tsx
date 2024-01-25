@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity, View as NativeView } from 'react-native';
+import { StyleSheet, TouchableOpacity, View as NativeView, RefreshControl } from 'react-native';
 import { Button, Card, Text, FAB, Chip, ActivityIndicator } from 'react-native-paper';
 
 import { View } from '../../components/Themed';
@@ -42,7 +42,7 @@ const RoomCard = (room: Room) => {
 }
 
 export default function Rooms() {
-  const { data: rooms, isLoading } = useGetMyRoomsQuery('');
+  const { data: rooms, isLoading, refetch } = useGetMyRoomsQuery('');
   const router = useRouter();
 
   const handleNewRoom = () => {
@@ -64,7 +64,14 @@ export default function Rooms() {
           <Text variant="titleLarge">Seassons</Text>
         </View>
         <View style={styles.cardsContainer}>
-          <ScrollView style={{ flex: 1 }}>
+          <ScrollView
+            style={{ flex: 1 }}
+            refreshControl={
+              <RefreshControl
+                refreshing={isLoading}
+                onRefresh={refetch}
+              />
+            }>
             {
               rooms.map((room) => <RoomCard key={room.id} {...room} />)
             }
