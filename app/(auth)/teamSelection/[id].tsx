@@ -50,13 +50,14 @@ function AdminSelection({ teams } : { teams: Team[] }) {
   const selectedTeam = useMemo(() => teams.find((team) => team.id === activeTeam), [activeTeam]);
 
   const filteredRidersList = useMemo(() => {
-    const items = ridersList?.data ? ridersList.data.map(rider => rider.attributes) : [];
+    const items = ridersList?.data ? ridersList.data.map(rider => ({ ...rider.attributes, id: rider.id })) : [];
     return items.filter((item) => item.name.toLowerCase().includes(riderQuery.toLowerCase()));
   }, [ridersList, riderQuery]);
 
   const removeCyclist = (id: number) => {}
 
-  const addCyclist = (cyclist: string) => {
+  const addCyclist = (cyclist: number) => {
+    console.log('trying to add cyclist', cyclist)
     setRiderQuery('');
   }
 
@@ -81,7 +82,7 @@ function AdminSelection({ teams } : { teams: Team[] }) {
         <View>
           {
             selectedTeam.riders.map((cyclist) => (
-              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }} key={cyclist.id}>
                 <Chip avatar={<Flag
                   code={cyclist.country}
                   size={32}
@@ -99,7 +100,7 @@ function AdminSelection({ teams } : { teams: Team[] }) {
               onChangeText={setRiderQuery}
               flatListProps={{
                 keyExtractor: (item) => item.name,
-                renderItem: ({ item }) => <TouchableOpacity onPress={() => addCyclist(item.name)}>
+                renderItem: ({ item }) => <TouchableOpacity onPress={() => addCyclist(item.id)}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: 'white', paddingVertical: 2}}>
                       <Flag
                         code={item.country}

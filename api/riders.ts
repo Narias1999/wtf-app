@@ -4,7 +4,7 @@ import { Rider } from './rooms';
 
 export const ridersApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    getAllRiders: builder.query<BaseResponse<{ attributes: Rider }[]>, unknown>({
+    getAllRiders: builder.query<BaseResponse<{ attributes: Rider, id: number }[]>, unknown>({
       providesTags: ['Riders'],
       query: () => '/riders',
     }),

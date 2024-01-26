@@ -29,9 +29,6 @@ export const invitationsApi = api.injectEndpoints({
           'filters[rejected_at][$null]': true
         }
       }),
-      onQueryStarted: async () => {
-        console.log('hello')
-      }
     }),
     updateInvitation: builder.mutation<BaseResponse<Invitation>, unknown>({
       invalidatesTags:['Rooms'],
