@@ -1,8 +1,10 @@
-import { ScrollView, StyleSheet, useColorScheme } from 'react-native';
-import { Button, Chip, Divider, Surface, Switch, Text } from 'react-native-paper';
+import { Fragment, useEffect, useMemo, useState } from 'react';
+import { ScrollView, StyleSheet, Touchable, TouchableOpacity, useColorScheme } from 'react-native';
+import { Button, Chip, Divider, IconButton, Surface, Text } from 'react-native-paper';
 import Flag from 'react-native-flags';
+import DropDown from 'react-native-paper-dropdown';
+
 import { View } from '../../../components/Themed';
-import { Fragment, useState } from 'react';
 import Colors from '../../../constants/Colors';
 
 import { useRouter, useLocalSearchParams } from 'expo-router';
@@ -10,6 +12,9 @@ import { useGetRoomByIdQuery, Team } from '../../../api/rooms';
 import { selectUser } from '../../../store/features/auth';
 import { useSelector } from 'react-redux';
 import { RefreshControl } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import AutocompleteInput from 'react-native-autocomplete-input';
+import { useGetAllRidersQuery } from '../../../api/riders';
 
 const RivalTeam = ({ user, riders }: Team) => {
   const colorScheme = useColorScheme();
@@ -35,17 +40,95 @@ const RivalTeam = ({ user, riders }: Team) => {
   )
 };
 
+function AdminSelection({ teams } : { teams: Team[] }) {
+  const [showDropDown, setShowDropDown] = useState(false);
+  const [activeTeam, setActiveTeam] = useState(null);
+  const [riderQuery, setRiderQuery] = useState('');
+  const { data: ridersList } = useGetAllRidersQuery('')
+
+  const teamsList = useMemo(() => teams.map((team) => ({ label: team.user?.username, value: team.id })), [teams]);
+  const selectedTeam = useMemo(() => teams.find((team) => team.id === activeTeam), [activeTeam]);
+
+  const filteredRidersList = useMemo(() => {
+    const items = ridersList?.data ? ridersList.data.map(rider => rider.attributes) : [];
+    return items.filter((item) => item.name.toLowerCase().includes(riderQuery.toLowerCase()));
+  }, [ridersList, riderQuery]);
+
+  const removeCyclist = (id: number) => {}
+
+  const addCyclist = (cyclist: string) => {
+    setRiderQuery('');
+  }
+
+  return (
+    <Fragment>
+      <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Text variant="titleLarge">
+          Team selection
+        </Text>
+          <DropDown
+            label={"Manager"}
+            mode={"outlined"}
+            visible={showDropDown}
+            showDropDown={() => setShowDropDown(true)}
+            onDismiss={() => setShowDropDown(false)}
+            value={activeTeam}
+            setValue={setActiveTeam}
+            list={teamsList}
+          />
+      </View>
+      {!!selectedTeam && (
+        <View>
+          {
+            selectedTeam.riders.map((cyclist) => (
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Chip avatar={<Flag
+                  code={cyclist.country}
+                  size={32}
+                />} key={cyclist.id}>{cyclist.name}</Chip>
+                  <IconButton mode="contained"  icon="minus" onPress={() => removeCyclist(cyclist.id)} />
+              </View>
+            ))
+          }
+
+          <View style={{ zIndex: 1 }}>
+            <AutocompleteInput
+              data={filteredRidersList}
+              value={riderQuery}
+              hideResults={riderQuery.length < 2}
+              onChangeText={setRiderQuery}
+              flatListProps={{
+                keyExtractor: (item) => item.name,
+                renderItem: ({ item }) => <TouchableOpacity onPress={() => addCyclist(item.name)}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: 'white', paddingVertical: 2}}>
+                      <Flag
+                        code={item.country}
+                        size={24}
+                      />
+                      <Text>{item.name}</Text>
+                    </View>
+                </TouchableOpacity>
+              }}
+            />
+          </View>
+
+          <Button>Update</Button>
+        </View>
+      )}
+      <Divider style={{ marginVertical: 30 }} />
+    </Fragment>
+  )
+}
+
 export default function TeamSelection() {
   const { id } = useLocalSearchParams();
   const { data, isLoading, refetch } = useGetRoomByIdQuery(id);
-  console.log(data.teams[0]);
   const user = useSelector(selectUser);
   const router = useRouter();
-  const colorScheme = useColorScheme();
-  const [ready, setReady] = useState(false);
-  const colors = Colors[colorScheme ?? 'light'];
 
   const isAdmin = data?.user_admin?.id === user?.id;
+
+  console.log(isAdmin, isLoading);
 
   const startSeason = () => {
     router.push('/leaderboard');
@@ -53,14 +136,8 @@ export default function TeamSelection() {
 
   return (
     <View style={{ paddingTop: 20, paddingHorizontal: 20, flex: 1 }}>
-      {isAdmin && (
-        <Fragment>
-          <Text variant="titleLarge" style={{ marginBottom: 10 }}>
-            Team selection
-          </Text>
-          {/* <MembersInvite /> */}
-          <Divider style={{ marginVertical: 30 }} />
-        </Fragment>
+      {isAdmin && !!data?.teams && (
+        <AdminSelection teams={data?.teams} />
       )}
       <View style={{ flex: 1 }}>
         <Text variant="titleLarge" style={{ marginBottom: 10, textAlign: 'center' }}>Managers</Text>

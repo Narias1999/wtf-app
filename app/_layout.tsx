@@ -47,7 +47,7 @@ function RootLayoutNav() {
 
   return (
     <ReduxProvider store={store}>
-      <PersistGate persistor={persistor}>
+      {/* <PersistGate persistor={persistor}> */}
         <Provider>
           <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
@@ -55,7 +55,7 @@ function RootLayoutNav() {
             </TouchableWithoutFeedback>
           </ThemeProvider>
         </Provider>
-      </PersistGate>
+      {/* </PersistGate> */}
     </ReduxProvider>
   );
 }

@@ -17,7 +17,6 @@ export default function Layout() {
   const { data: invitations, refetch, isLoading } = useGetMyInvitationsQuery('', {
     pollingInterval: 10000
   });
-  console.log(invitations?.data, isLoading);
 
   const getConfig = (title: string, icon: string) => ({
     tabBarLabel: title,
