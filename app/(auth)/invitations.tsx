@@ -1,17 +1,12 @@
-import { StyleSheet, TouchableOpacity, View as NativeView } from "react-native";
+import { StyleSheet, View as NativeView } from "react-native";
 import { Button, Card, Text, Icon, useTheme } from "react-native-paper";
-import { useSelector, useDispatch } from "react-redux";
 
 import { View } from "../../components/Themed";
 
-import {
-  selectInvitations,
-  setInvitations,
-} from "../../store/features/inivitations";
 import { useRouter } from "expo-router";
 import { ScrollView } from "react-native-gesture-handler";
-import { Invitation, useUpdateInvitationMutation } from "../../api/invitations";
-import { isLoading } from "expo-font";
+import { Invitation, useGetMyInvitationsQuery, useUpdateInvitationMutation } from "../../api/invitations";
+import { useGetMyRoomsQuery } from "../../api/rooms";
 
 const EmptyState = () => (
   <View style={styles.emptyStateContainer}>
@@ -33,7 +28,6 @@ const InvitationCard = ({
   onChangeInvitation,
   isLoading
 }: invitationCardProps) => {
-  const router = useRouter();
   const theme = useTheme();
 
   return (
@@ -72,24 +66,23 @@ const InvitationCard = ({
 
 export default function Invitations() {
   const [updateInvitation, { isLoading }] = useUpdateInvitationMutation();
-  const invitations = useSelector(selectInvitations);
-  const dispatch = useDispatch();
+  const { data: invitations, refetch } = useGetMyInvitationsQuery('');
+  const { refetch: refetchRooms } = useGetMyRoomsQuery('');
+
   const router = useRouter();
 
   const handleChangeInvitation: changeInvitation = async (accept, id) => {
+    if (!invitations) return;
     await updateInvitation({ id, accept });
-    const invitationIndex = invitations.findIndex(
-      (invitation) => invitation.id === id
-    );
-    let newInvitations = JSON.parse(JSON.stringify(invitations));
-    const invitation: Invitation[] = newInvitations.slice(invitationIndex, 1);
-    dispatch(setInvitations(newInvitations));
-    if (accept) {
-      router.push(`/teamSelection/${invitation[0].room.id}`);
+    const invitation = invitations.data.find((invitation) => invitation.id === id);
+    if (accept && invitation) {
+      router.push(`/teamSelection/${invitation.room.id}`);
     }
+    await refetch();
+    await refetchRooms();
   };
 
-  if (invitations?.length) {
+  if (invitations?.data?.length) {
     return (
       <View style={{ padding: 10, position: "relative", flex: 1 }}>
         <View style={styles.titleContainer}>
@@ -97,7 +90,7 @@ export default function Invitations() {
         </View>
         <View style={styles.cardsContainer}>
           <ScrollView style={{ flex: 1 }}>
-            {invitations.map((invitation) => (
+            {invitations.data.map((invitation) => (
               <InvitationCard
                 key={invitation.id}
                 invitation={invitation}

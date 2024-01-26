@@ -4,7 +4,6 @@ import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { api } from '../api';
 import { authSlice } from './features/auth';
-import { invitationsSlice } from './features/inivitations';
 
 const persistConfig = {
   key: 'root',
@@ -14,7 +13,6 @@ const persistConfig = {
 const rootReducer = combineReducers({
   [api.reducerPath]: api.reducer,
   auth: authSlice.reducer,
-  invitations: invitationsSlice.reducer,
 });
 
 
@@ -22,7 +20,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
   reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>getDefaultMiddleware(
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware(
     {
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],

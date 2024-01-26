@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { User } from '../../api/auth';
 import { RootState } from '../index';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface AuthState {
   jwt: string | null;
@@ -24,6 +25,7 @@ export const authSlice = createSlice({
     logout: (state) => {
       state.jwt = null;
       state.user = null;
+      AsyncStorage.clear();
     },
   },
 });

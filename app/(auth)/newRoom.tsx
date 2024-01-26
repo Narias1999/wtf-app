@@ -5,7 +5,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { Button, Text, TextInput } from 'react-native-paper';
 import MembersInvite from '../../components/MembersInvite';
 import { useRouter } from 'expo-router';
-import { useCreateRoomMutation } from '../../api/rooms';
+import { useCreateRoomMutation, useGetMyRoomsQuery } from '../../api/rooms';
 
 type roomForm = {
   name: string,
@@ -21,7 +21,9 @@ export default function NewRoom() {
   const statusBarHeight = Platform.OS === 'ios' ? 35 : StatusBar.currentHeight || 0;
   const [ form, setForm ] = useState<roomForm>(defaultFormValues)
   const router = useRouter();
-  const [createRoom, { data, isError, isSuccess, error: loginError, isLoading }] = useCreateRoomMutation();
+  const [createRoom, { data, isSuccess, isLoading,  }] = useCreateRoomMutation();
+  const { refetch: refetchRooms } = useGetMyRoomsQuery('');
+  
 
   useEffect(() => {
     if(isSuccess) {
@@ -34,6 +36,11 @@ export default function NewRoom() {
       ...form,
       [key]: value,
     });
+  }
+
+  const handleRoomCreation = async () => {
+    await createRoom(form);
+    await refetchRooms();
   }
 
   return (
@@ -50,7 +57,7 @@ export default function NewRoom() {
           </View>
 
           <View style={{ alignItems: 'center', paddingTop: 30 }}>
-            <Button mode="elevated" loading={isLoading} onPress={()=>createRoom(form)}>Create</Button>
+            <Button mode="elevated" loading={isLoading} onPress={handleRoomCreation}>Create</Button>
           </View>
         </KeyboardAvoidingView>
       </View>

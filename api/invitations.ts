@@ -31,6 +31,7 @@ export const invitationsApi = api.injectEndpoints({
       }),
     }),
     updateInvitation: builder.mutation<BaseResponse<Invitation>, unknown>({
+      invalidatesTags:['Rooms'],
       query: ({ id, accept }: updateInvitation) => {
         let data = {}
         if(accept) {

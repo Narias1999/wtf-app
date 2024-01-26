@@ -33,6 +33,7 @@ export interface Room {
 export const roomsApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getMyRooms: builder.query<Room[], unknown>({
+      providesTags: ['Rooms'],
       query: () => '/rooms',
     }),
     getRoomById: builder.query<Room, unknown>({
@@ -49,6 +50,7 @@ export const roomsApi = api.injectEndpoints({
           }
         }
       },
+      invalidatesTags: ['Rooms']
     }),
   }),
 });

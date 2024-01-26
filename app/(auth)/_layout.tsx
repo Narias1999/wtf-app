@@ -2,10 +2,9 @@ import { StyleSheet, useColorScheme} from 'react-native'
 import { Redirect, Tabs, router } from 'expo-router'
 import { Icon } from 'react-native-paper';
 import { IconButton, Text, useTheme, List } from 'react-native-paper'
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { selectUser } from '../../store/features/auth';
-import { setInvitations, selectInvitations } from '../../store/features/inivitations';
 import { useGetMyInvitationsQuery } from '../../api/invitations';
 import Colors from '../../constants/Colors';
 import { View } from '../../components/Themed';
@@ -16,15 +15,15 @@ export default function Layout() {
   const colors = Colors[colorScheme ?? 'light'];
   const theme = useTheme();
   const user = useSelector(selectUser);
-  const invitations = useSelector(selectInvitations)
-  const dispatch = useDispatch()
-  const { data, isLoading, isSuccess } = useGetMyInvitationsQuery('');
+  const { data: invitations, refetch } = useGetMyInvitationsQuery('');
 
-  useEffect(()=> {
-    if(isSuccess && data) {
-      dispatch(setInvitations({ invitations: data.data}))
-    }
-  }, [isSuccess, data])
+  useEffect(() => {
+    const pullTimer = setTimeout(() => {
+      refetch();
+    }, 30000);
+
+    return () => clearInterval(pullTimer);
+  }, []);
 
   const getConfig = (title: string, icon: string) => ({
     tabBarLabel: title,
@@ -61,7 +60,7 @@ export default function Layout() {
           size={20}
           onPress={() => router.push('/invitations')}
         />
-        {!!invitations?.length && <Text variant="labelSmall" style={styles.notificationsCount}>{invitations?.length}</Text>}
+        {!!invitations?.data?.length && <Text variant="labelSmall" style={styles.notificationsCount}>{invitations.data.length}</Text>}
       </View>
     ),
     headerTitle: () => <Text variant="titleMedium" style={colorStyle}>WTF</Text>,
