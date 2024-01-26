@@ -2,17 +2,16 @@ import { ScrollView, StyleSheet, useColorScheme } from 'react-native';
 import { Button, Chip, Divider, Surface, Switch, Text } from 'react-native-paper';
 import Flag from 'react-native-flags';
 import { View } from '../../../components/Themed';
-import MembersInvite from '../../../components/MembersInvite';
 import { Fragment, useState } from 'react';
 import Colors from '../../../constants/Colors';
 
-import roomData from '../../../data/mockRoomData.json';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useGetRoomByIdQuery, Team } from '../../../api/rooms';
 import { selectUser } from '../../../store/features/auth';
 import { useSelector } from 'react-redux';
+import { RefreshControl } from 'react-native-gesture-handler';
 
-const RivalTeam = ({ user, ridres }: Team) => {
+const RivalTeam = ({ user, riders }: Team) => {
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? 'light'];
 
@@ -20,17 +19,11 @@ const RivalTeam = ({ user, ridres }: Team) => {
     <Surface elevation={1} style={[styles.teamSurface]}>
       <View style={styles.teamContainer}>
         <Text variant="titleMedium">{user?.username}</Text>
-
-        {/* {
-          !ready && (
-            <Text variant="titleSmall" style={{ color: colors.error }}>Not Ready</Text>
-          )
-        } */}
       </View>
       <Divider style={{ marginBottom: 20 }} />
       <View style={{ backgroundColor: 'transparent', alignItems: 'flex-start', gap: 10 }}>
         {
-          ridres?.map((cyclist) => (
+          riders?.map((cyclist) => (
             <Chip avatar={<Flag
               code={cyclist.country}
               size={32}
@@ -44,12 +37,15 @@ const RivalTeam = ({ user, ridres }: Team) => {
 
 export default function TeamSelection() {
   const { id } = useLocalSearchParams();
-  const { data, isLoading } = useGetRoomByIdQuery(id);
+  const { data, isLoading, refetch } = useGetRoomByIdQuery(id);
+  console.log(data.teams[0]);
   const user = useSelector(selectUser);
   const router = useRouter();
   const colorScheme = useColorScheme();
   const [ready, setReady] = useState(false);
   const colors = Colors[colorScheme ?? 'light'];
+
+  const isAdmin = data?.user_admin?.id === user?.id;
 
   const startSeason = () => {
     router.push('/leaderboard');
@@ -57,27 +53,26 @@ export default function TeamSelection() {
 
   return (
     <View style={{ paddingTop: 20, paddingHorizontal: 20, flex: 1 }}>
-      {data?.user_admin?.id === user?.id && (
+      {isAdmin && (
         <Fragment>
           <Text variant="titleLarge" style={{ marginBottom: 10 }}>
-            Choose Your team
+            Team selection
           </Text>
           {/* <MembersInvite /> */}
-          <View style={styles.readyCheckbox}>
-            <Text variant="titleMedium">Ready</Text>
-            <Switch
-              value={ready}
-              onValueChange={() => setReady(!ready)}
-              color={colors.success}
-            />
-          </View>
           <Divider style={{ marginVertical: 30 }} />
         </Fragment>
       )}
       <View style={{ flex: 1 }}>
         <Text variant="titleLarge" style={{ marginBottom: 10, textAlign: 'center' }}>Managers</Text>
 
-        <ScrollView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={isLoading}
+              onRefresh={refetch}
+            />
+          }
+        >
           <View style={{ paddingBottom: 20, paddingHorizontal: 10 }}>
             {
               data?.teams.map((team: Team) => (
@@ -86,7 +81,7 @@ export default function TeamSelection() {
             }
           </View>
         </ScrollView>
-        {data?.user_admin?.id === user?.id && (
+        {isAdmin && (
           <View style={styles.buttonContainer}>
             <Button mode="contained" onPress={startSeason}>
               Start Season

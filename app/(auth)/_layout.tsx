@@ -8,22 +8,16 @@ import { selectUser } from '../../store/features/auth';
 import { useGetMyInvitationsQuery } from '../../api/invitations';
 import Colors from '../../constants/Colors';
 import { View } from '../../components/Themed';
-import { useEffect } from 'react';
 
 export default function Layout() {
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? 'light'];
   const theme = useTheme();
   const user = useSelector(selectUser);
-  const { data: invitations, refetch } = useGetMyInvitationsQuery('');
-
-  useEffect(() => {
-    const pullTimer = setTimeout(() => {
-      refetch();
-    }, 30000);
-
-    return () => clearInterval(pullTimer);
-  }, []);
+  const { data: invitations, refetch, isLoading } = useGetMyInvitationsQuery('', {
+    pollingInterval: 10000
+  });
+  console.log(invitations?.data, isLoading);
 
   const getConfig = (title: string, icon: string) => ({
     tabBarLabel: title,

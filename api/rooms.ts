@@ -15,7 +15,7 @@ export interface Team {
   createdAt: string,
   updatedAt: string,
   user: User
-  ridres: Rider[]
+  riders: Rider[]
 }
 
 export interface Room {
