@@ -1,8 +1,9 @@
 import { StyleSheet, useColorScheme} from 'react-native'
-import { Redirect, Tabs, router } from 'expo-router'
+import { Redirect, Stack, Tabs, router } from 'expo-router'
 import { Icon } from 'react-native-paper';
 import { IconButton, Text, useTheme, List } from 'react-native-paper'
 import { useSelector } from 'react-redux';
+import { useRoute } from '@react-navigation/native';
 
 import { selectUser } from '../../store/features/auth';
 import { useGetMyInvitationsQuery } from '../../api/invitations';
@@ -13,11 +14,11 @@ export default function Layout() {
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? 'light'];
   const theme = useTheme();
+  const route = useRoute()
   const user = useSelector(selectUser);
   const { data: invitations, refetch, isLoading } = useGetMyInvitationsQuery('', {
     pollingInterval: 10000
   });
-
   const getConfig = (title: string, icon: string) => ({
     tabBarLabel: title,
     tabBarIcon: ({focused, size}: { focused: boolean, size: number }) => (
@@ -57,6 +58,12 @@ export default function Layout() {
       </View>
     ),
     headerTitle: () => <Text variant="titleMedium" style={colorStyle}>WTF</Text>,
+  }
+
+  if(route.params?.screen === '(season)') {
+    return <Stack screenOptions={headerOptions}>
+      <Stack.Screen name='(season)'/>
+    </Stack>
   }
 
   return (
