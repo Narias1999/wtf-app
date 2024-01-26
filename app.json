@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "world-tour-fantasy-app",
-    "slug": "world-tour-fantasy-app",
+    "slug": "wtf",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -16,13 +16,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.theindigo.wtf"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.theindigo.wtf"
     },
     "web": {
       "bundler": "metro",
@@ -34,6 +36,15 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "232a4654-d603-44a0-99ab-9b91d8a89319"
+      }
+    },
+    "owner": "theindigo"
   }
 }
