@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native'; 
 import { Text, Card, DataTable, Avatar } from 'react-native-paper';
-import Flag from 'react-native-flags';
+import Flag from "react-native-country-flag";
 
 import myTeamData from '../../../data/myTeam.json';
 import { View } from '../../../components/Themed';
@@ -31,7 +31,7 @@ export default function News() {
               <DataTable.Cell>{index+1}</DataTable.Cell>
               <DataTable.Cell style={{ flex: 5 }}>
                 <View style={styles.riderContainer}>
-                  <Flag code={rider.country} size={24} />
+                  <Flag isoCode={rider.country.toLowerCase()} size={24} />
                   <Text>{rider.name}</Text>
                 </View>
               </DataTable.Cell>

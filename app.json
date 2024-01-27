@@ -45,6 +45,12 @@
         "projectId": "232a4654-d603-44a0-99ab-9b91d8a89319"
       }
     },
-    "owner": "theindigo"
+    "owner": "theindigo",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/232a4654-d603-44a0-99ab-9b91d8a89319"
+    }
   }
 }

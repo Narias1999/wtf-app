@@ -2,7 +2,6 @@ import { Fragment, useEffect, useMemo, useState } from "react";
 import {
   ScrollView,
   StyleSheet,
-  Touchable,
   TouchableOpacity,
   useColorScheme,
 } from "react-native";
@@ -15,7 +14,7 @@ import {
   Text,
   useTheme,
 } from "react-native-paper";
-import Flag from "react-native-flags";
+import Flag from "react-native-country-flag";
 import DropDown from "react-native-paper-dropdown";
 
 import { View } from "../../../components/Themed";
@@ -50,7 +49,7 @@ const RivalTeam = ({ user, riders }: Team) => {
       >
         {riders?.map((cyclist) => (
           <Chip
-            avatar={<Flag code={cyclist.country} size={32} />}
+            avatar={<Flag isoCode={cyclist.country.toLowerCase()} size={32} />}
             key={cyclist.id}
           >
             {cyclist.name}
@@ -160,7 +159,7 @@ function AdminSelection({ teams, refetch }: { teams: Team[], refetch: Function, 
               key={cyclist.id}
             >
               <Chip
-                avatar={<Flag code={cyclist.country} size={32} />}
+                avatar={<Flag isoCode={cyclist.country.toLowerCase()} size={32} />}
                 key={cyclist.id}
               >
                 {cyclist.name}
@@ -192,7 +191,7 @@ function AdminSelection({ teams, refetch }: { teams: Team[], refetch: Function, 
                           paddingVertical: 2,
                         }}
                       >
-                        <Flag code={item.country} size={24} />
+                        <Flag isoCode={item.country.toLowerCase()} size={24} />
                         <Text>{item.name}</Text>
                       </View>
                     </TouchableOpacity>

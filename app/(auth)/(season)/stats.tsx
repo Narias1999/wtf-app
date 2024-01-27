@@ -1,7 +1,7 @@
 import { StyleSheet, View as TView, ScrollView, SafeAreaView } from 'react-native'
 import { Card, Text, Divider, DataTable } from 'react-native-paper';
 import DropDown from 'react-native-paper-dropdown';
-import Flag from 'react-native-flags';
+import Flag from "react-native-country-flag";
 
 import { View } from '../../../components/Themed';
 
@@ -74,7 +74,7 @@ function Result({ result }: { result: Result }) {
     <Card style={styles.resultContainer}>
       <TView style={styles.resultHeader}>
         <TView style={styles.resultTitle}>
-          <Flag code={result.country} size={24} />
+          <Flag isoCode={result.country.toLowerCase()} size={24} />
           <Text>{result.name}</Text>
         </TView>
         {
@@ -92,7 +92,7 @@ function Result({ result }: { result: Result }) {
                   <DataTable.Cell>{index+1}</DataTable.Cell>
                   <DataTable.Cell style={{ flex: 5 }}>
                     <View style={styles.riderContainer}>
-                      <Flag code={rider.country} size={24} />
+                      <Flag isoCode={rider.country.toLowerCase()} size={24} />
                       <Text>{rider.name}</Text>
                     </View>
                   </DataTable.Cell>
