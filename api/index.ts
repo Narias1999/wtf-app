@@ -1,7 +1,7 @@
 import { fetchBaseQuery, createApi, retry } from '@reduxjs/toolkit/query/react';
 import { RootState } from '../store';
 
-const baseUrl = `https://fs-node-m1q1.onrender.com//api`;
+const baseUrl = `https://fs-node-m1q1.onrender.com/api`;
 
 const baseQuery = fetchBaseQuery({
   baseUrl,
@@ -11,7 +11,7 @@ const baseQuery = fetchBaseQuery({
       headers.set('Authorization', `Bearer ${token}`);
     }
     return headers;
-    
+
   }
 });
 
