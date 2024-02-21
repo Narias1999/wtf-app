@@ -52,7 +52,21 @@ export const roomsApi = api.injectEndpoints({
       },
       invalidatesTags: ['Rooms']
     }),
+    startSeason: builder.mutation<Room, number>({
+      query: (id) => {
+        return {
+          url: `/rooms/${id}`,
+          method: 'PUT',
+          body: {
+            data: {
+              started_at: new Date().toISOString()
+            }
+          }
+        }
+      },
+      invalidatesTags: ['Rooms']
+    }),
   }),
 });
 
-export const { useCreateRoomMutation, useGetRoomByIdQuery, useGetMyRoomsQuery } = roomsApi;
+export const { useCreateRoomMutation, useGetRoomByIdQuery, useGetMyRoomsQuery, useStartSeasonMutation } = roomsApi;

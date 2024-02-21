@@ -60,9 +60,9 @@ export default function Layout() {
     headerTitle: () => <Text variant="titleMedium" style={colorStyle}>WTF</Text>,
   }
 
-  if(route.params?.screen === '(season)') {
+  if(route.params?.screen === '(season)/[id]') {
     return <Stack screenOptions={headerOptions}>
-      <Stack.Screen name='(season)'/>
+      <Stack.Screen name='(season)/[id]'/>
     </Stack>
   }
 
@@ -70,7 +70,7 @@ export default function Layout() {
     <Tabs screenOptions={headerOptions}>
       <Tabs.Screen name="index" options={getConfig('Seasons', 'home')} />
       <Tabs.Screen name="profile" options={getConfig('Profile', 'account')} />
-      <Tabs.Screen name="(season)" options={{ tabBarButton: () => null }} />
+      <Tabs.Screen name="(season)/[id]" options={{ tabBarButton: () => null }} />
       <Tabs.Screen name="newRoom" options={{ tabBarButton: () => null }} />
       <Tabs.Screen name="teamSelection/[id]" options={{ tabBarButton: () => null }} />
       <Tabs.Screen name="invitations" options={{ tabBarButton: () => null }} />

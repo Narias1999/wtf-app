@@ -1,7 +1,7 @@
 import { StyleSheet, ScrollView, Image } from 'react-native'
 import { DataTable, Avatar, Card, Text, Divider } from 'react-native-paper'
-import leaderboardData from '../../../data/leaderboard.json';
-import { View } from '../../../components/Themed';
+import leaderboardData from '../../../../data/leaderboard.json';
+import { View } from '../../../../components/Themed';
 
 interface Manager {
   name: string;

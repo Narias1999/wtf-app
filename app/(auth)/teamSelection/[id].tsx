@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 import {
+  Alert,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
@@ -21,7 +22,7 @@ import { View } from "../../../components/Themed";
 import Colors from "../../../constants/Colors";
 
 import { useRouter, useLocalSearchParams } from "expo-router";
-import { useGetRoomByIdQuery, Team, Rider } from "../../../api/rooms";
+import { useGetRoomByIdQuery, Team, Rider, useCreateRoomMutation, useStartSeasonMutation } from "../../../api/rooms";
 import { selectUser } from "../../../store/features/auth";
 import { useSelector } from "react-redux";
 import { RefreshControl } from "react-native-gesture-handler";
@@ -226,13 +227,23 @@ function AdminSelection({ teams, refetch }: { teams: Team[], refetch: Function, 
 export default function TeamSelection() {
   const { id } = useLocalSearchParams();
   const { data, isLoading, refetch } = useGetRoomByIdQuery(id);
+  const [startSeasonCall, { isSuccess: succesfullyStarted, isLoading: isLoadingStartSeason, error  }] = useStartSeasonMutation();
   const user = useSelector(selectUser);
   const router = useRouter();
+
+  useEffect(() => {
+    if (succesfullyStarted) router.push(`/${id}/leaderboard`);
+  }, [succesfullyStarted, error]);
 
   const isAdmin = data?.user_admin?.id === user?.id;
 
   const startSeason = () => {
-    router.push("/leaderboard");
+    const teamRiders = data?.teams.map(team => team.riders.length) || [];
+    if (teamRiders.includes(0)) {
+      Alert.alert('Not quite yet', 'All teams must have at least one rider. You can\'t make changes to the teams once the season starts', [{ text: 'OK' }]);
+    } else {
+      startSeasonCall(Number(id));
+    }
   };
 
   return (
@@ -260,7 +271,7 @@ export default function TeamSelection() {
         </ScrollView>
         {isAdmin && (
           <View style={styles.buttonContainer}>
-            <Button mode="contained" onPress={startSeason}>
+            <Button mode="contained" onPress={startSeason} disabled={isLoadingStartSeason}>
               Start Season
             </Button>
           </View>
