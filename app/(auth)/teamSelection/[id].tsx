@@ -25,19 +25,20 @@ import { useGetRoomByIdQuery, Team, Rider } from "../../../api/rooms";
 import { selectUser } from "../../../store/features/auth";
 import { useSelector } from "react-redux";
 import { RefreshControl } from "react-native-gesture-handler";
-import { SafeAreaView } from "react-native-safe-area-context";
 import AutocompleteInput from "react-native-autocomplete-input";
 import { useGetAllRidersQuery } from "../../../api/riders";
 import { useUpdateRoomTeamMutation } from "../../../api/roomTeam";
 
 const RivalTeam = ({ user, riders }: Team) => {
   const colorScheme = useColorScheme();
+  const currentUser = useSelector(selectUser);
   const colors = Colors[colorScheme ?? "light"];
 
   return (
     <Surface elevation={1} style={[styles.teamSurface]}>
       <View style={styles.teamContainer}>
         <Text variant="titleMedium">{user?.username}</Text>
+        { currentUser?.id === user.id && <Text style={{ color: colors.success, fontWeight: '600' }}>(You)</Text> }
       </View>
       <Divider style={{ marginBottom: 20 }} />
       <View
@@ -47,6 +48,11 @@ const RivalTeam = ({ user, riders }: Team) => {
           gap: 10,
         }}
       >
+        {
+          !riders?.length && (
+            <Text style={{ textAlign: "center" }}>No riders selected</Text>
+          )
+        }
         {riders?.map((cyclist) => (
           <Chip
             avatar={<Flag isoCode={cyclist.country.toLowerCase()} size={32} />}
@@ -119,12 +125,13 @@ function AdminSelection({ teams, refetch }: { teams: Team[], refetch: Function, 
   };
 
   return (
-    <Fragment>
+    <>
       <View
         style={{
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
+          zIndex: 1000
         }}
       >
         <Text variant="titleLarge">Team selection</Text>
@@ -148,66 +155,71 @@ function AdminSelection({ teams, refetch }: { teams: Team[], refetch: Function, 
         />
       </View>
       {!!selectedTeam && (
-        <View>
-          {selectedRiders.map((cyclist) => (
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
+        <>
+          <View style={{ paddingTop: 20 }}>
+            <AutocompleteInput
+              data={filteredRidersList}
+              value={riderQuery}
+              hideResults={riderQuery.length < 1}
+              onChangeText={setRiderQuery}
+              flatListProps={{
+                style: { maxHeight: 200, zIndex: 500 },
+                keyExtractor: (item) => item.name,
+                renderItem: ({ item }) => (
+                  <TouchableOpacity onPress={() => addCyclist(item.id)}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        backgroundColor: "white",
+                        paddingVertical: 6,
+                        gap: 10,
+                        padding: 10,
+                        zIndex: 50
+                      }}
+                    >
+                      <Flag isoCode={item.country.toLowerCase()} size={24} />
+                      <Text>{item.name}</Text>
+                    </View>
+                  </TouchableOpacity>
+                ),
               }}
-              key={cyclist.id}
-            >
-              <Chip
-                avatar={<Flag isoCode={cyclist.country.toLowerCase()} size={32} />}
+            />
+          </View>
+          <View style={{ zIndex: -1 }}>
+            {selectedRiders.map((cyclist) => (
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  padding: 0
+                }}
                 key={cyclist.id}
               >
-                {cyclist.name}
-              </Chip>
-              <IconButton
-                mode="contained"
-                icon="minus"
-                onPress={() => removeCyclist(cyclist.id)}
-              />
-            </View>
-          ))}
+                <Chip
+                  avatar={<Flag isoCode={cyclist.country.toLowerCase()} size={32} />}
+                  key={cyclist.id}
+                >
+                  {cyclist.name}
+                </Chip>
+                <IconButton
+                  mode="contained"
+                  icon="minus"
+                  onPress={() => removeCyclist(cyclist.id)}
+                />
+              </View>
+            ))}
 
-          <View style={{ zIndex: 1, position: "relative", height: 50 }}>
-            <View style={styles.autocompleteContainer}>
-              <AutocompleteInput
-                data={filteredRidersList}
-                value={riderQuery}
-                hideResults={riderQuery.length < 2}
-                onChangeText={setRiderQuery}
-                flatListProps={{
-                  keyExtractor: (item) => item.name,
-                  renderItem: ({ item }) => (
-                    <TouchableOpacity onPress={() => addCyclist(item.id)}>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          alignItems: "center",
-                          backgroundColor: "white",
-                          paddingVertical: 2,
-                        }}
-                      >
-                        <Flag isoCode={item.country.toLowerCase()} size={24} />
-                        <Text>{item.name}</Text>
-                      </View>
-                    </TouchableOpacity>
-                  ),
-                }}
-              />
-            </View>
+
+            <Button onPress={updateRiders} loading={isLoading}>
+              Update
+            </Button>
           </View>
-
-          <Button onPress={updateRiders} loading={isLoading}>
-            Update
-          </Button>
-        </View>
+        </>
       )}
-      <Divider style={{ marginVertical: 30 }} />
-    </Fragment>
+      <Divider style={{ marginVertical: 30, zIndex: -1 }} />
+    </>
   );
 }
 
@@ -225,24 +237,25 @@ export default function TeamSelection() {
 
   return (
     <View style={{ paddingTop: 20, paddingHorizontal: 20, flex: 1 }}>
-      {isAdmin && !!data?.teams && <AdminSelection teams={data?.teams} refetch={refetch} />}
-      <View style={{ flex: 1 }}>
-        <Text
-          variant="titleLarge"
-          style={{ marginBottom: 10, textAlign: "center" }}
-        >
-          Managers
-        </Text>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={isLoading} onRefresh={refetch} />
+        }
+      >
+        {isAdmin && !!data?.teams && <AdminSelection teams={data?.teams} refetch={refetch} />}
+        <View style={{ flex: 1, zIndex: -1 }}>
+          <Text
+            variant="titleLarge"
+            style={{ marginBottom: 10, textAlign: "center" }}
+          >
+            Teams
+          </Text>
 
-        <ScrollView
-          refreshControl={
-            <RefreshControl refreshing={isLoading} onRefresh={refetch} />
-          }
-        >
-          <View style={{ paddingBottom: 20, paddingHorizontal: 10 }}>
-            {data?.teams.map((team: Team) => (
-              <RivalTeam key={team.id} {...team} />
-            ))}
+            <View style={{ paddingBottom: 20, paddingHorizontal: 10 }}>
+              {data?.teams.map((team: Team) => (
+                <RivalTeam key={team.id} {...team} />
+              ))}
+            </View>
           </View>
         </ScrollView>
         {isAdmin && (
@@ -252,7 +265,6 @@ export default function TeamSelection() {
             </Button>
           </View>
         )}
-      </View>
     </View>
   );
 }
