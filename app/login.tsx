@@ -3,7 +3,7 @@ import { StyleSheet, KeyboardAvoidingView, Platform, View as TransparentView, To
 
 import { TextInput, Text, Button, useTheme, Divider } from 'react-native-paper';
 import { View } from '../components/Themed';
-import { useLoginMutation } from '../api/auth';
+import { useLoginMutation, useGetUserQuery } from '../api/auth';
 import { setAuth } from '../store/features/auth';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'expo-router';
@@ -22,6 +22,9 @@ export default function Login() {
   const theme = useTheme();
   const passwordInput = useRef<RNTextInput | null>(null);
   const [login, { data, isError, isSuccess, error: loginError, isLoading }] = useLoginMutation();
+  const { data: allUser, refetch: getUser  } = useGetUserQuery('', {
+    skip: !data
+  });
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -37,9 +40,16 @@ export default function Login() {
   useEffect(() => {
     if (isSuccess && data) {
       dispatch(setAuth(data));
-      router.replace('/');
+      getUser()
     }
   }, [isSuccess]);
+
+  useEffect(() => {
+    if (allUser && data) {
+      dispatch(setAuth({...data, user: allUser}));
+      router.replace('/');
+    }
+  }, [allUser]);
 
   const handleUpdateForm = (key: keyof LoginForm) => (value: string) => {
     setForm({

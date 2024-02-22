@@ -1,7 +1,7 @@
 import { fetchBaseQuery, createApi, retry } from '@reduxjs/toolkit/query/react';
 import { RootState } from '../store';
 
-const baseUrl = `http://localhost:1337/api`;
+const baseUrl = `http://192.168.0.121:1337/api`;
 
 const baseQuery = fetchBaseQuery({
   baseUrl,

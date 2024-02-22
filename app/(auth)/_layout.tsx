@@ -74,7 +74,10 @@ export default function Layout() {
       <Tabs.Screen name="newRoom" options={{ tabBarButton: () => null }} />
       <Tabs.Screen name="teamSelection/[id]" options={{ tabBarButton: () => null }} />
       <Tabs.Screen name="invitations" options={{ tabBarButton: () => null }} />
-
+      {user.role?.type == 'admin' ?
+        <Tabs.Screen name="results" options={getConfig('Results', 'counter')} />
+        : <Tabs.Screen name="results" options={{ tabBarButton: () => null }} />
+      }
     </Tabs>
   )
 }

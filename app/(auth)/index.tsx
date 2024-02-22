@@ -6,6 +6,7 @@ import { View } from '../../components/Themed';
 import { useRouter } from 'expo-router';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Room, useGetMyRoomsQuery } from '../../api/rooms';
+import { useGetAllRidersQuery } from '../../api/riders';
 
 const EmptyState = ({ onCreateNew }: { onCreateNew: () => void }) => ( <View style={styles.emptyStateContainer}>
   <Text variant="titleMedium" style={styles.noRoomsText}>You are not part of any room yet.</Text>
@@ -42,6 +43,7 @@ const RoomCard = (room: Room) => {
 }
 
 export default function Rooms() {
+  useGetAllRidersQuery('');
   const { data: rooms, isLoading, refetch } = useGetMyRoomsQuery('');
   const router = useRouter();
 

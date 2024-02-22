@@ -8,8 +8,18 @@ export interface User {
   confirmed: boolean,
   blocked: boolean,
   createdAt: Date,
-  updatedAt: Date
+  updatedAt: Date,
+  role?: Role
 };
+
+export interface Role {
+  id:          number;
+  name:        string;
+  description: string;
+  type:        string;
+  createdAt:   Date;
+  updatedAt:   Date;
+}
 
 interface AuthResponse {
   jwt: string;
@@ -24,6 +34,16 @@ export const authApi = api.injectEndpoints({
           url: 'auth/local',
           method: 'POST',
           body
+        }
+      }
+    }),
+    getUser: builder.query<User, unknown>({
+      query: () => {
+        return {
+          url: 'users/me',
+          params: {
+            'populate': '*',
+          }
         }
       }
     }),
@@ -43,4 +63,4 @@ export const authApi = api.injectEndpoints({
   })
 });
 
-export const { useLoginMutation, useRegisterMutation } = authApi;
+export const { useLoginMutation, useRegisterMutation, useGetUserQuery } = authApi;

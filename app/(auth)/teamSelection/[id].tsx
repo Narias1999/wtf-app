@@ -1,9 +1,8 @@
-import { Fragment, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Alert,
   ScrollView,
   StyleSheet,
-  TouchableOpacity,
   useColorScheme,
 } from "react-native";
 import {
@@ -22,13 +21,13 @@ import { View } from "../../../components/Themed";
 import Colors from "../../../constants/Colors";
 
 import { useRouter, useLocalSearchParams } from "expo-router";
-import { useGetRoomByIdQuery, Team, Rider, useCreateRoomMutation, useStartSeasonMutation } from "../../../api/rooms";
+import { useGetRoomByIdQuery, Team, Rider, useStartSeasonMutation } from "../../../api/rooms";
 import { selectUser } from "../../../store/features/auth";
 import { useSelector } from "react-redux";
 import { RefreshControl } from "react-native-gesture-handler";
-import AutocompleteInput from "react-native-autocomplete-input";
 import { useGetAllRidersQuery } from "../../../api/riders";
 import { useUpdateRoomTeamMutation } from "../../../api/roomTeam";
+import AutocompleteRiders from "../../../components/AutocompleteRiders";
 
 const RivalTeam = ({ user, riders }: Team) => {
   const colorScheme = useColorScheme();
@@ -70,9 +69,8 @@ const RivalTeam = ({ user, riders }: Team) => {
 function AdminSelection({ teams, refetch }: { teams: Team[], refetch: Function, }) {
   const [showDropDown, setShowDropDown] = useState(false);
   const [activeTeam, setActiveTeam] = useState(null);
-  const [riderQuery, setRiderQuery] = useState("");
   const [selectedRiders, setSelectedRiders] = useState<Rider[]>([]);
-  const { data: ridersList } = useGetAllRidersQuery("");
+  const { data: ridersList } = useGetAllRidersQuery("", {skip: true});
   const [updateRoomTeam, { isLoading }] = useUpdateRoomTeamMutation();
 
   useEffect(() => {
@@ -90,15 +88,6 @@ function AdminSelection({ teams, refetch }: { teams: Team[], refetch: Function, 
     [activeTeam]
   );
 
-  const filteredRidersList = useMemo(() => {
-    const items = ridersList?.data
-      ? ridersList.data.map((rider) => ({ ...rider.attributes, id: rider.id }))
-      : [];
-    return items.filter((item) =>
-      item.name.toLowerCase().includes(riderQuery.toLowerCase())
-    );
-  }, [ridersList, riderQuery]);
-
   const removeCyclist = (id: number) => {
     let updatedRiders = [...selectedRiders];
     const riderIndex = updatedRiders.findIndex((rider) => rider.id == id);
@@ -106,10 +95,9 @@ function AdminSelection({ teams, refetch }: { teams: Team[], refetch: Function, 
     setSelectedRiders(updatedRiders);
   };
 
-  const addCyclist = (cyclist: number) => {
-    if(selectedRiders.some(item => item.id == cyclist)) return
-    setRiderQuery("");
-    const rider = ridersList?.data.find((rider) => rider.id == cyclist);
+  const addCyclist = (cyclist: Rider) => {
+    if(selectedRiders.some(item => item.id == cyclist.id)) return
+    const rider = ridersList?.data.find((rider) => rider.id == cyclist.id);
     const formatedRider: Rider = { ...rider?.attributes!, id: rider?.id! };
     setSelectedRiders([...selectedRiders, formatedRider]);
   };
@@ -158,34 +146,7 @@ function AdminSelection({ teams, refetch }: { teams: Team[], refetch: Function, 
       {!!selectedTeam && (
         <>
           <View style={{ paddingTop: 20 }}>
-            <AutocompleteInput
-              data={filteredRidersList}
-              value={riderQuery}
-              hideResults={riderQuery.length < 1}
-              onChangeText={setRiderQuery}
-              flatListProps={{
-                style: { maxHeight: 200, zIndex: 500 },
-                keyExtractor: (item) => item.name,
-                renderItem: ({ item }) => (
-                  <TouchableOpacity onPress={() => addCyclist(item.id)}>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        backgroundColor: "white",
-                        paddingVertical: 6,
-                        gap: 10,
-                        padding: 10,
-                        zIndex: 50
-                      }}
-                    >
-                      <Flag isoCode={item.country.toLowerCase()} size={24} />
-                      <Text>{item.name}</Text>
-                    </View>
-                  </TouchableOpacity>
-                ),
-              }}
-            />
+            <AutocompleteRiders onSelect={addCyclist}/>
           </View>
           <View style={{ zIndex: -1 }}>
             {selectedRiders.map((cyclist) => (
