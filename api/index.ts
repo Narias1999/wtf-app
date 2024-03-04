@@ -1,7 +1,7 @@
 import { fetchBaseQuery, createApi, retry } from '@reduxjs/toolkit/query/react';
 import { RootState } from '../store';
 
-const baseUrl = `http://192.168.0.121:1337/api`;
+const baseUrl = `https://fs-node-m1q1.onrender.com/api`;
 
 const baseQuery = fetchBaseQuery({
   baseUrl,

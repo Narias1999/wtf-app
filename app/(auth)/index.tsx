@@ -19,7 +19,7 @@ const RoomCard = (room: Room) => {
 
   return (
     <View style={styles.card}>
-      <TouchableOpacity onPress={() => router.push(`/teamSelection/${room.id}`)}>
+      <TouchableOpacity onPress={() => router.push(room.started_at ? `/${room.id}/leaderboard` : `/teamSelection/${room.id}`)}>
         <Card>
           <Card.Content>
             <NativeView style={styles.cardTitle}>
@@ -44,7 +44,7 @@ const RoomCard = (room: Room) => {
 
 export default function Rooms() {
   useGetAllRidersQuery('');
-  const { data: rooms, isLoading, refetch } = useGetMyRoomsQuery('');
+  const { data: rooms, isLoading, refetch, error } = useGetMyRoomsQuery('');
   const router = useRouter();
 
   const handleNewRoom = () => {
