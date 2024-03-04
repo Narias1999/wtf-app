@@ -19,9 +19,7 @@ interface Props {
 
 export default function AutocompleteRiders ({ onSelect }: Props) {
   const [riderQuery, setRiderQuery] = useState("");
-  const { data: ridersList } = useGetAllRidersQuery('', {
-    skip: true
-  });
+  const { data: ridersList } = useGetAllRidersQuery('');
   const filteredRidersList = useMemo(() => {
     const items = ridersList?.data
       ? ridersList.data.map((rider) => ({ ...rider.attributes, id: rider.id }))
@@ -42,7 +40,10 @@ export default function AutocompleteRiders ({ onSelect }: Props) {
         style: { maxHeight: 200, zIndex: 500 },
         keyExtractor: (item) => item.name,
         renderItem: ({ item }) => (
-          <TouchableOpacity onPress={() => onSelect(item)}>
+          <TouchableOpacity onPress={() => {
+            onSelect(item)
+            setRiderQuery('')
+          }}>
             <View
               style={{
                 flexDirection: "row",

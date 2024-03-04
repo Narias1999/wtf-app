@@ -70,7 +70,6 @@ function AdminSelection({ teams, refetch }: { teams: Team[], refetch: Function, 
   const [showDropDown, setShowDropDown] = useState(false);
   const [activeTeam, setActiveTeam] = useState(null);
   const [selectedRiders, setSelectedRiders] = useState<Rider[]>([]);
-  const { data: ridersList } = useGetAllRidersQuery("", {skip: true});
   const [updateRoomTeam, { isLoading }] = useUpdateRoomTeamMutation();
 
   useEffect(() => {
@@ -96,10 +95,9 @@ function AdminSelection({ teams, refetch }: { teams: Team[], refetch: Function, 
   };
 
   const addCyclist = (cyclist: Rider) => {
+    console.log(cyclist)
     if(selectedRiders.some(item => item.id == cyclist.id)) return
-    const rider = ridersList?.data.find((rider) => rider.id == cyclist.id);
-    const formatedRider: Rider = { ...rider?.attributes!, id: rider?.id! };
-    setSelectedRiders([...selectedRiders, formatedRider]);
+    setSelectedRiders([...selectedRiders, cyclist]);
   };
 
   const updateRiders = async () => {
@@ -163,7 +161,7 @@ function AdminSelection({ teams, refetch }: { teams: Team[], refetch: Function, 
                   avatar={<Flag isoCode={cyclist.country.toLowerCase()} size={32} />}
                   key={cyclist.id}
                 >
-                  {cyclist.name}
+                  {cyclist?.name}
                 </Chip>
                 <IconButton
                   mode="contained"
