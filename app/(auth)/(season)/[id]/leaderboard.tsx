@@ -2,6 +2,10 @@ import { StyleSheet, ScrollView, Image } from 'react-native'
 import { DataTable, Avatar, Card, Text, Divider } from 'react-native-paper'
 import leaderboardData from '../../../../data/leaderboard.json';
 import { View } from '../../../../components/Themed';
+import { useRoute } from '@react-navigation/native';
+import { Team, useGetRoomByIdQuery } from '../../../../api/rooms';
+import { useContext } from 'react';
+import { SeasonContext } from './_layout';
 
 interface Manager {
   name: string;
@@ -35,6 +39,8 @@ const RaceBanner = () => {
 }
 
 export default function Leaderboard() {
+  const { season } = useContext(SeasonContext);
+
   return (
    <View style={styles.container}>
     <Card style={styles.gcContainer}>
@@ -44,11 +50,11 @@ export default function Leaderboard() {
         left={() => <Avatar.Icon size={30} icon="flag-checkered" />}
       />
       <DataTable>
-        {leaderboardData.map((manager: Manager, index: number) => (
-          <DataTable.Row key={manager.name}>
+        {season?.teams.map((manager: Team, index: number) => (
+          <DataTable.Row key={manager.user.id}>
             <DataTable.Cell>{index+1}</DataTable.Cell>
-            <DataTable.Cell style={{ flex: 5 }}>{manager.name}</DataTable.Cell>
-            <DataTable.Cell numeric>{manager.points}</DataTable.Cell>
+            <DataTable.Cell style={{ flex: 5 }}>{manager.user.username}</DataTable.Cell>
+            <DataTable.Cell numeric>0</DataTable.Cell>
           </DataTable.Row>
         ))}
       </DataTable>

@@ -4,7 +4,13 @@ import Flag from "react-native-country-flag";
 
 import myTeamData from '../../../../data/myTeam.json';
 import { View } from '../../../../components/Themed';
-import { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
+import { useRoute } from '@react-navigation/native';
+import { Rider, useGetRoomByIdQuery } from '../../../../api/rooms';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../../../store/features/auth';
+import { isLoading } from 'expo-font';
+import { SeasonContext } from './_layout';
 
 interface RiderPoints {
   name: string;
@@ -13,6 +19,15 @@ interface RiderPoints {
 }
 
 export default function News() {
+  const user = useSelector(selectUser);
+  const { season, isLoading } = useContext(SeasonContext);
+  const riderTeam = useMemo(() => {
+    if (season?.teams && user) {
+      return season?.teams.find(team => team.user.id === user.id)
+    }
+    return null
+  }, [season, user]);
+
   const total = useMemo(() => myTeamData.reduce(
     (acc: number, curr: RiderPoints) => acc + curr.points, 0), []
   );
@@ -25,25 +40,28 @@ export default function News() {
           titleVariant="titleMedium"
           left={() => <Avatar.Icon size={30} icon="bike" />}
         />
-        <DataTable>
-          {myTeamData.map((rider: RiderPoints, index: number) => (
-            <DataTable.Row key={rider.name}>
-              <DataTable.Cell>{index+1}</DataTable.Cell>
-              <DataTable.Cell style={{ flex: 5 }}>
-                <View style={styles.riderContainer}>
-                  <Flag isoCode={rider.country.toLowerCase()} size={24} />
-                  <Text>{rider.name}</Text>
-                </View>
-              </DataTable.Cell>
-              <DataTable.Cell numeric>{rider.points}</DataTable.Cell>
+        {
+          isLoading || !riderTeam ? <Text>Loading...</Text> : 
+          <DataTable>
+            {riderTeam.riders.map((rider: Rider, index: number) => (
+              <DataTable.Row key={rider.name}>
+                <DataTable.Cell>{index+1}</DataTable.Cell>
+                <DataTable.Cell style={{ flex: 5 }}>
+                  <View style={styles.riderContainer}>
+                    <Flag isoCode={rider.country.toLowerCase()} size={24} />
+                    <Text>{rider.name}</Text>
+                  </View>
+                </DataTable.Cell>
+                <DataTable.Cell numeric>0</DataTable.Cell>
+              </DataTable.Row>
+            ))}
+            <DataTable.Row>
+              <DataTable.Cell>{' '}</DataTable.Cell>
+              <DataTable.Cell style={{ flex: 5 }}>Total</DataTable.Cell>
+              <DataTable.Cell numeric>{total}</DataTable.Cell>
             </DataTable.Row>
-          ))}
-          <DataTable.Row>
-            <DataTable.Cell>{' '}</DataTable.Cell>
-            <DataTable.Cell style={{ flex: 5 }}>Total</DataTable.Cell>
-            <DataTable.Cell numeric>{total}</DataTable.Cell>
-          </DataTable.Row>
-        </DataTable>
+          </DataTable>
+        }
       </Card>
     </View>
   )

@@ -25,7 +25,6 @@ import { useGetRoomByIdQuery, Team, Rider, useStartSeasonMutation } from "../../
 import { selectUser } from "../../../store/features/auth";
 import { useSelector } from "react-redux";
 import { RefreshControl } from "react-native-gesture-handler";
-import { useGetAllRidersQuery } from "../../../api/riders";
 import { useUpdateRoomTeamMutation } from "../../../api/roomTeam";
 import AutocompleteRiders from "../../../components/AutocompleteRiders";
 
