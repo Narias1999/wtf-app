@@ -7,7 +7,12 @@ export interface Result {
   attributes: {
     points: number,
     position: number,
-    rider: Rider
+    rider: {
+      data: {
+        attributes: Rider,
+        id: number
+      }
+    }
   }
 }
 
@@ -24,7 +29,7 @@ export const resultApi = api.injectEndpoints({
       unknown
     >({
       query: (data: params) => ({
-        url: 'result',
+        url: 'results',
         method: 'POST',
         body: {
           data,

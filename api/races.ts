@@ -2,6 +2,7 @@ import { BaseResponse } from './baseTypes';
 import { api } from './index';
 import { Result } from './results';
 import { Rider } from './rooms';
+import { Stage } from './stages';
 
 export interface Race {
   id: number,
@@ -11,22 +12,6 @@ export interface Race {
     location: string,
     stages: {
       data: Stage[]
-    }
-  }
-}
-
-export interface Stage {
-  id: number,
-  attributes: {
-    number: number,
-    year: number,
-    distance: number,
-    start_location: string
-    end_location: string,
-    terrain: string,
-    date: Date
-    results: {
-      data: Result[]
     }
   }
 }
