@@ -51,7 +51,7 @@ export default function Rooms() {
 
   useEffect(() => {
     if (isLoading) {
-      AsyncStorage.getItem('activeSeason').then((activeSeason) => {
+      AsyncStorage.getItem('activeSeason').then((activeSeason): void =>  {
         if (activeSeason) {
           router.push(`/${activeSeason}/leaderboard`);
         }

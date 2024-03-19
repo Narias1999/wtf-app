@@ -52,7 +52,7 @@ export default function Layout() {
           iconColor={theme.colors.inversePrimary}
           size={20}
           onPress={async () => {
-            router.replace('/')
+            router.push('/')
           }}
         />
       </View>
