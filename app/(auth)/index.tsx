@@ -50,12 +50,14 @@ export default function Rooms() {
   const router = useRouter();
 
   useEffect(() => {
-    AsyncStorage.getItem('activeSeason').then((activeSeason) => {
-      if (activeSeason) {
-        router.push(`/${activeSeason}/leaderboard`);
-      }
-    });
-  }, []);
+    if (isLoading) {
+      AsyncStorage.getItem('activeSeason').then((activeSeason) => {
+        if (activeSeason) {
+          router.push(`/${activeSeason}/leaderboard`);
+        }
+      });
+    }
+  }, [isLoading]);
 
   const handleNewRoom = () => {
     router.push('/newRoom');
