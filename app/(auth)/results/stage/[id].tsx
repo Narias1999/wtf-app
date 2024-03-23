@@ -43,46 +43,49 @@ export default function Results() {
       <ActivityIndicator />
     </View>
   }
-  return <ScrollView>
-  <Card mode="elevated" style={{ margin: 20 }} contentStyle={{ padding: 10 }}>
+  return <Card mode="elevated" style={{ margin: 20 }} contentStyle={{ padding: 10 }}>
     <Card.Title titleVariant="titleLarge" title={`${data?.data.attributes.race.data.attributes.Name}: Stage ${data?.data.attributes.number}`}/>
     <View style={{ zIndex: 10 }}>
-      <View style={{flexDirection: 'row',  marginVertical: 10}}>
-        <AutocompleteRiders style={{flex:1, marginRight: 10}} saveSelection onSelect={(rider)=> setResultData({...resultData, rider})}/>
-        <TextInput style={{ height:40}} placeholder="position" value={resultData.position} onChangeText={(value) => setResultData({...resultData, position: value})} />
+      <View style={{flexDirection: 'row',  marginVertical: 10, zIndex: 1000}}>
+        <AutocompleteRiders
+          style={{flex:1, marginRight: 10}}
+          saveSelection
+          onSelect={(rider)=> setResultData({...resultData, rider})}/>
+        <TextInput style={{ height:40}} placeholder="Position" value={resultData.position} onChangeText={(value) => setResultData({...resultData, position: value})} />
       </View>
-      <Button style={{ borderRadius: 10, marginLeft: 10, zIndex: -1 }} mode="contained" compact onPress={handleSubmit} loading={isLoading || loadingSubmit || status === 'pending'}>Submit</Button>
+      <Button style={{ borderRadius: 10, marginLeft: 10, zIndex: -2 }} mode="contained" compact onPress={handleSubmit} loading={isLoading || loadingSubmit || status === 'pending'}>Submit</Button>
     </View>
     <View style={{ marginTop: 10, backgroundColor: 'white' }}>
-      <DataTable>
-          <DataTable.Header>
-            <DataTable.Title>position</DataTable.Title>
-            <DataTable.Title style={{ flex: 2, justifyContent: 'center' }}>rider</DataTable.Title>
-            <DataTable.Title style={{ justifyContent: 'flex-end' }}>points</DataTable.Title>
-          </DataTable.Header>
-          {
-            sortedResults.map((result) => {
-              const rider = result.attributes.rider.data.attributes
-              return (
-                <DataTable.Row key={result.id}>
-                  <DataTable.Cell>
-                      <Text>{result.attributes.position}</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell style={{ flex: 2 }}>
-                    <View style={{ flexDirection: 'row' }}>
-                      <Flag isoCode={rider.country.toLowerCase()} size={24} style={{ marginRight: 10 }}/>
-                      <Text>{rider.name}</Text>
-                    </View>
-                  </DataTable.Cell>
-                  <DataTable.Cell numeric>
-                      <Text>{result.attributes.points}</Text>
-                  </DataTable.Cell>
-                </DataTable.Row>
-              )
-            })
-          }
-      </DataTable>
+      <ScrollView>
+        <DataTable>
+            <DataTable.Header>
+              <DataTable.Title>Position</DataTable.Title>
+              <DataTable.Title style={{ flex: 2}}>Rider</DataTable.Title>
+              <DataTable.Title style={{ justifyContent: 'flex-end' }}>Points</DataTable.Title>
+            </DataTable.Header>
+            {
+              sortedResults.map((result) => {
+                const rider = result.attributes.rider.data.attributes
+                return (
+                  <DataTable.Row key={result.id}>
+                    <DataTable.Cell>
+                        <Text>{result.attributes.position}</Text>
+                    </DataTable.Cell>
+                    <DataTable.Cell style={{ flex: 2 }}>
+                      <View style={{ flexDirection: 'row' }}>
+                        <Flag isoCode={rider.country.toLowerCase()} size={24} style={{ marginRight: 10 }}/>
+                        <Text>{rider.name}</Text>
+                      </View>
+                    </DataTable.Cell>
+                    <DataTable.Cell numeric>
+                        <Text>{result.attributes.points}</Text>
+                    </DataTable.Cell>
+                  </DataTable.Row>
+                )
+              })
+            }
+        </DataTable>
+      </ScrollView>
     </View>
   </Card>
-</ScrollView>
 }

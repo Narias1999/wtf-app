@@ -35,19 +35,20 @@ export default function AutocompleteRiders ({ onSelect, saveSelection, style }: 
   }, [ridersList, riderQuery]);
 
   return (
-    <View style={[{ zIndex: 1 }, style]}>
+    <View style={[{ zIndex: 10 }, style]}>
       <AutocompleteInput
         data={filteredRidersList}
         value={riderQuery}
+        containerStyle={{ zIndex: 5000 }}
         hideResults={riderQuery.length < 1 || hideResults}
         placeholder="Rider"
-        listContainerStyle={{maxHeight: 200, zIndex: 500, position: 'absolute', top: 42}}
         onChangeText={(value)=>{
           setRiderQuery(value)
           setHideResults(false)
         }}
         flatListProps={{
           keyExtractor: (item) => item.name,
+          style: {maxHeight: 300, zIndex: 5000},
           renderItem: ({ item }) => (
             <TouchableOpacity onPress={() => {
               onSelect(item)
@@ -66,7 +67,8 @@ export default function AutocompleteRiders ({ onSelect, saveSelection, style }: 
                   paddingVertical: 6,
                   gap: 10,
                   padding: 10,
-                  zIndex: 50
+                  zIndex: 500,
+                  maxHeight: 200
                 }}
               >
                 <Flag isoCode={item.country.toLowerCase()} size={24} />
