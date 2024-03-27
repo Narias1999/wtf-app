@@ -45,7 +45,10 @@ export default function Results() {
   }
   return <ScrollView>
   <Card mode="elevated" style={{ margin: 20 }} contentStyle={{ padding: 10 }}>
-    <Card.Title titleVariant="titleLarge" title={`${data?.data.attributes.race.data.attributes.Name}: Stage ${data?.data.attributes.number}`}/>
+    <Card.Title titleVariant="titleLarge" title={<View style={{ flexDirection: 'row' }}>
+      <Flag isoCode={data?.data?.attributes?.race?.data?.attributes?.location?.toLowerCase() ?? ''} size={24} style={{ marginRight: 10 }}/>
+      <Text>{`${data?.data.attributes.race.data.attributes.Name}: Stage ${data?.data.attributes.number}`}</Text>
+    </View>}/>
     <View style={{ zIndex: 10 }}>
       <View style={{flexDirection: 'row',  marginVertical: 10}}>
         <AutocompleteRiders style={{flex:1, marginRight: 10}} saveSelection onSelect={(rider)=> setResultData({...resultData, rider})}/>

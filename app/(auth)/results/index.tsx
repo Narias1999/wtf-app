@@ -5,6 +5,7 @@ import { ScrollView } from "react-native";
 import { useState } from "react";
 import DropDown from "react-native-paper-dropdown";
 import { useRouter } from "expo-router";
+import Flag from "react-native-country-flag";
 
 export default function Results() {
   const router = useRouter();
@@ -34,7 +35,11 @@ export default function Results() {
           setValue={setRace}
           list={data?.data.map((item, idx) => ({
             label: item.attributes.Name,
-            value: idx
+            value: idx,
+            custom: <View style={{ flexDirection: 'row' }}>
+              <Flag isoCode={item.attributes.location.toLowerCase()} size={24}/>
+              <Text style={{ marginLeft: 10 }}>{item.attributes.Name}</Text>
+            </View>
           })) ?? []}
         />
       </View>
