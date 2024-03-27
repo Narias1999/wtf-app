@@ -7,6 +7,8 @@ import { useRouter } from 'expo-router';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Room, useGetMyRoomsQuery } from '../../api/rooms';
 import { useGetAllRidersQuery } from '../../api/riders';
+import { useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const EmptyState = ({ onCreateNew }: { onCreateNew: () => void }) => ( <View style={styles.emptyStateContainer}>
   <Text variant="titleMedium" style={styles.noRoomsText}>You are not part of any room yet.</Text>
@@ -46,6 +48,16 @@ export default function Rooms() {
   useGetAllRidersQuery('');
   const { data: rooms, isLoading, refetch, error } = useGetMyRoomsQuery('');
   const router = useRouter();
+
+  useEffect(() => {
+    if (isLoading) {
+      AsyncStorage.getItem('activeSeason').then((activeSeason): void =>  {
+        if (activeSeason) {
+          router.push(`/${activeSeason}/leaderboard`);
+        }
+      });
+    }
+  }, [isLoading]);
 
   const handleNewRoom = () => {
     router.push('/newRoom');

@@ -9,6 +9,7 @@ import { selectUser } from '../../store/features/auth';
 import { useGetMyInvitationsQuery } from '../../api/invitations';
 import Colors from '../../constants/Colors';
 import { View } from '../../components/Themed';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Layout() {
   const colorScheme = useColorScheme();
@@ -23,7 +24,7 @@ export default function Layout() {
     tabBarLabel: title,
     tabBarIcon: ({focused, size}: { focused: boolean, size: number }) => (
       <Icon
-        color={focused ? colors.primary : colors.text} 
+        color={focused ? colors.primary : colors.text}
         source={icon}
         size={size} />
     ),
@@ -44,6 +45,18 @@ export default function Layout() {
     },
     headerShadowVisible: false,
     headerBackTitleVisible: false,
+    headerLeft: () => (
+      <View style={styles.notificationsContainer}>
+        <IconButton
+          icon="home"
+          iconColor={theme.colors.inversePrimary}
+          size={20}
+          onPress={async () => {
+            router.push('/')
+          }}
+        />
+      </View>
+    ),
     headerRight: () => (
       <View
         style={styles.notificationsContainer}
@@ -70,7 +83,11 @@ export default function Layout() {
     <Tabs screenOptions={headerOptions}>
       <Tabs.Screen name="index" options={getConfig('Seasons', 'home')} />
       <Tabs.Screen name="profile" options={getConfig('Profile', 'account')} />
-      <Tabs.Screen name="(season)/[id]" options={{ tabBarButton: () => null }} />
+      <Tabs.Screen name="(season)/[id]" options={
+        {
+          tabBarButton: () => null,
+        }
+      }/>
       <Tabs.Screen name="newRoom" options={{ tabBarButton: () => null }} />
       <Tabs.Screen name="teamSelection/[id]" options={{ tabBarButton: () => null }} />
       <Tabs.Screen name="invitations" options={{ tabBarButton: () => null }} />

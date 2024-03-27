@@ -1,10 +1,12 @@
-import { StyleSheet, useColorScheme } from 'react-native';
+import { useColorScheme } from 'react-native';
 import { Tabs } from 'expo-router/tabs';
 import { Icon } from 'react-native-paper';
 import Colors from '../../../../constants/Colors';
 import { useRoute } from '@react-navigation/native';
 import { useGetRoomByIdQuery, Room } from '../../../../api/rooms';
 import { createContext } from 'react';
+import { useFocusEffect } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 interface ISeasonContext {
   season: Room | undefined;
   isLoading: boolean;
@@ -20,6 +22,10 @@ export default function Season() {
   const route = useRoute();
   const { data: season, isLoading } = useGetRoomByIdQuery(route.params?.id as number);
   const colors = Colors[colorScheme ?? 'light'];
+
+  useFocusEffect(() => {
+    AsyncStorage.setItem('activeSeason', route.params?.id as string);
+  });
 
   const getConfig = (title: string, icon: string) => ({
     tabBarLabel: title,
@@ -46,4 +52,3 @@ export default function Season() {
   );
 }
 
-const styles = StyleSheet.create({})

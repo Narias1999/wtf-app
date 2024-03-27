@@ -1,15 +1,13 @@
-import { StyleSheet } from 'react-native'; 
+import { StyleSheet } from 'react-native';
 import { Text, Card, DataTable, Avatar } from 'react-native-paper';
 import Flag from "react-native-country-flag";
 
 import myTeamData from '../../../../data/myTeam.json';
 import { View } from '../../../../components/Themed';
 import { useContext, useMemo } from 'react';
-import { useRoute } from '@react-navigation/native';
-import { Rider, useGetRoomByIdQuery } from '../../../../api/rooms';
+import { Rider } from '../../../../api/rooms';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../../../store/features/auth';
-import { isLoading } from 'expo-font';
 import { SeasonContext } from './_layout';
 
 interface RiderPoints {
@@ -41,7 +39,7 @@ export default function News() {
           left={() => <Avatar.Icon size={30} icon="bike" />}
         />
         {
-          isLoading || !riderTeam ? <Text>Loading...</Text> : 
+          isLoading || !riderTeam ? <Text>Loading...</Text> :
           <DataTable>
             {riderTeam.riders.map((rider: Rider, index: number) => (
               <DataTable.Row key={rider.name}>
