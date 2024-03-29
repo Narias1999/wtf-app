@@ -63,7 +63,6 @@ export default function AutocompleteRiders ({ onSelect, saveSelection, style }: 
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
-                  backgroundColor: "white",
                   paddingVertical: 6,
                   gap: 10,
                   padding: 10,
