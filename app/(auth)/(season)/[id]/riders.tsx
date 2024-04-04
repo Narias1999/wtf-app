@@ -41,7 +41,7 @@ export default function News() {
         {
           isLoading || !riderTeam ? <Text>Loading...</Text> :
           <DataTable>
-            {riderTeam.riders.map((rider: Rider, index: number) => (
+            {riderTeam.riders.map((rider, index: number) => (
               <DataTable.Row key={rider.name}>
                 <DataTable.Cell>{index+1}</DataTable.Cell>
                 <DataTable.Cell style={{ flex: 5 }}>
@@ -50,13 +50,13 @@ export default function News() {
                     <Text>{rider.name}</Text>
                   </View>
                 </DataTable.Cell>
-                <DataTable.Cell numeric>0</DataTable.Cell>
+                <DataTable.Cell numeric>{rider.points}</DataTable.Cell>
               </DataTable.Row>
             ))}
             <DataTable.Row>
               <DataTable.Cell>{' '}</DataTable.Cell>
               <DataTable.Cell style={{ flex: 5 }}>Total</DataTable.Cell>
-              <DataTable.Cell numeric>{total}</DataTable.Cell>
+              <DataTable.Cell numeric>{riderTeam?.totalPoints}</DataTable.Cell>
             </DataTable.Row>
           </DataTable>
         }

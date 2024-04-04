@@ -8,6 +8,7 @@ export interface Rider {
   picture: string,
   name: string,
   country: string,
+  points?: number
 }
 
 export interface Team {
@@ -16,6 +17,7 @@ export interface Team {
   updatedAt: string,
   user: User
   riders: Rider[]
+  totalPoints?: number
 }
 
 export interface Room {

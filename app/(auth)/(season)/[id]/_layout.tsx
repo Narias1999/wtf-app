@@ -4,9 +4,10 @@ import { Icon } from 'react-native-paper';
 import Colors from '../../../../constants/Colors';
 import { useRoute } from '@react-navigation/native';
 import { useGetRoomByIdQuery, Room } from '../../../../api/rooms';
-import { createContext } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { useFocusEffect } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { TeamResult, useGetTeamResultMutation } from '../../../../api/results';
 interface ISeasonContext {
   season: Room | undefined;
   isLoading: boolean;
@@ -20,12 +21,25 @@ export const SeasonContext = createContext({
 export default function Season() {
   const colorScheme = useColorScheme();
   const route = useRoute();
+  const [teamsResult, setTeamResult] = useState<TeamResult[] | undefined>()
+  const [ getTeamResult ] = useGetTeamResultMutation()
   const { data: season, isLoading } = useGetRoomByIdQuery(route.params?.id as number);
   const colors = Colors[colorScheme ?? 'light'];
+
+  const getTeamsResult = async () => {
+    const promises = season?.teams.map(team => getTeamResult(team.id))
+    const result = await Promise.all(promises ?? [])
+    setTeamResult(result.map(result => result.data))
+  }
 
   useFocusEffect(() => {
     AsyncStorage.setItem('activeSeason', route.params?.id as string);
   });
+
+  useEffect(()=> {
+    if(!season || isLoading) return
+    getTeamsResult()
+  }, [season])
 
   const getConfig = (title: string, icon: string) => ({
     tabBarLabel: title,
@@ -38,7 +52,13 @@ export default function Season() {
 
   return (
     <SeasonContext.Provider value={{
-      season: season,
+      season: (season) && teamsResult ? {
+        ...season,
+        teams: season?.teams?.map((seasonTeam, idx) => ({
+          ...seasonTeam,
+          ...teamsResult?.[idx],
+        })) ?? []
+      } : undefined,
       isLoading
     }}>
       <Tabs screenOptions={{

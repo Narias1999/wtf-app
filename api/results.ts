@@ -22,6 +22,11 @@ interface params {
   stage: number
 }
 
+export interface TeamResult {
+  totalPoints?: number,
+  riders: Rider[]
+}
+
 export const resultApi = api.injectEndpoints({
   endpoints: (builder) => ({
     createResult: builder.mutation<
@@ -36,7 +41,16 @@ export const resultApi = api.injectEndpoints({
         },
       }),
     }),
+    getTeamResult: builder.mutation<
+      BaseResponse<TeamResult>,
+      unknown
+    >({
+      query: (teamId: number) => ({
+        url: `results/team-result/${teamId}`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
-export const { useCreateResultMutation } = resultApi;
+export const { useCreateResultMutation, useGetTeamResultMutation } = resultApi;

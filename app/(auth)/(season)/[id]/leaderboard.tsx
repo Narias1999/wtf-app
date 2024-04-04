@@ -50,11 +50,11 @@ export default function Leaderboard() {
         left={() => <Avatar.Icon size={30} icon="flag-checkered" />}
       />
       <DataTable>
-        {season?.teams.map((manager: Team, index: number) => (
+        {season?.teams?.map((manager: Team, index: number) => (
           <DataTable.Row key={manager.user.id}>
             <DataTable.Cell>{index+1}</DataTable.Cell>
             <DataTable.Cell style={{ flex: 5 }}>{manager.user.username}</DataTable.Cell>
-            <DataTable.Cell numeric>0</DataTable.Cell>
+            <DataTable.Cell numeric>{manager.totalPoints}</DataTable.Cell>
           </DataTable.Row>
         ))}
       </DataTable>
