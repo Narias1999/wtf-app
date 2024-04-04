@@ -22,50 +22,52 @@ export default function Results() {
       <ActivityIndicator />
     </View>
   }
-  return <ScrollView style={{paddingHorizontal: 10, paddingVertical: 10  }}>
-    <View>
-      <DropDown
-        label={"Race"}
-        mode={"outlined"}
-        visible={showDropDown}
-        showDropDown={() => setShowDropDown(true)}
-        onDismiss={() => setShowDropDown(false)}
-        value={race}
-        setValue={setRace}
-        list={data?.data.map((item, idx) => ({
-          label: item.attributes.Name,
-          value: idx,
-          custom: <View style={{ flexDirection: 'row' }}>
-            <Flag isoCode={item.attributes.location.toLowerCase()} size={24}/>
-            <Text style={{ marginLeft: 10 }}>{item.attributes.Name}</Text>
-          </View>
-        })) ?? []}
-      />
-    </View>
-    <Divider />
-    <View style={{ marginTop: 20 }}>
-      <DataTable>
-        <DataTable.Header>
-          <DataTable.Title>Number</DataTable.Title>
-          <DataTable.Title>Distance</DataTable.Title>
-          <DataTable.Title style={{ flex: 2 }}>Location</DataTable.Title>
-        </DataTable.Header>
-        {
-          data?.data[race].attributes.stages.data.map((stage) => (
-            <DataTable.Row key={stage.id} onPress={()=>router.replace(`/results/stage/${stage.id}`)}>
-              <DataTable.Cell>
-                  <Text>{stage.attributes.number}</Text>
-              </DataTable.Cell>
-              <DataTable.Cell>
-                  <Text>{stage.attributes.distance}</Text>
-              </DataTable.Cell>
-              <DataTable.Cell style={{ flex: 2 }}>
-                  <Text>{stage.attributes.start_location} - {stage.attributes.end_location}</Text>
-              </DataTable.Cell>
-            </DataTable.Row>
-          ))
-        }
-      </DataTable>
-    </View>
-  </ScrollView>
+  return <View style={{ flex: 1 }}>
+    <ScrollView style={{paddingHorizontal: 10, paddingVertical: 10  }}>
+      <View>
+        <DropDown
+          label={"Race"}
+          mode={"outlined"}
+          visible={showDropDown}
+          showDropDown={() => setShowDropDown(true)}
+          onDismiss={() => setShowDropDown(false)}
+          value={race}
+          setValue={setRace}
+          list={data?.data.map((item, idx) => ({
+            label: item.attributes.Name,
+            value: idx,
+            custom: <View style={{ flexDirection: 'row' }}>
+              <Flag isoCode={item.attributes.location.toLowerCase()} size={24}/>
+              <Text style={{ marginLeft: 10 }}>{item.attributes.Name}</Text>
+            </View>
+          })) ?? []}
+        />
+      </View>
+      <Divider />
+      <View style={{ marginTop: 20 }}>
+        <DataTable>
+          <DataTable.Header>
+            <DataTable.Title>Number</DataTable.Title>
+            <DataTable.Title>Distance</DataTable.Title>
+            <DataTable.Title style={{ flex: 2 }}>Location</DataTable.Title>
+          </DataTable.Header>
+          {
+            data?.data[race].attributes.stages.data.map((stage) => (
+              <DataTable.Row key={stage.id} onPress={()=>router.replace(`/results/stage/${stage.id}`)}>
+                <DataTable.Cell>
+                    <Text>{stage.attributes.number}</Text>
+                </DataTable.Cell>
+                <DataTable.Cell>
+                    <Text>{stage.attributes.distance}</Text>
+                </DataTable.Cell>
+                <DataTable.Cell style={{ flex: 2 }}>
+                    <Text>{stage.attributes.start_location} - {stage.attributes.end_location}</Text>
+                </DataTable.Cell>
+              </DataTable.Row>
+            ))
+          }
+        </DataTable>
+      </View>
+    </ScrollView>
+  </View>
 }
