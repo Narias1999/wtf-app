@@ -5,6 +5,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { api } from '../api';
 import { authSlice } from './features/auth';
 
+AsyncStorage.clear();
+
 const authPersistConfig = {
   key: 'auth',
   storage: AsyncStorage,
