@@ -66,31 +66,31 @@ function Result({ race }: { race: Race }) {
     <Card style={styles.resultContainer}>
       <TView style={styles.resultHeader}>
         <TView style={styles.resultTitle}>
-          <Flag isoCode={race.attributes.location.toLowerCase()} size={24} />
-          <Text>{race.attributes.Name}</Text>
+          <Flag isoCode={race?.attributes?.location?.toLowerCase()} size={24} />
+          <Text>{race?.attributes?.Name}</Text>
         </TView>
         {
-          race.attributes.stages.data.length > 1 ? (
-            <StageSelector stages={race.attributes.stages.data} stage={stage} setStage={setStage} />
-          ) : <Text>Stage {race.attributes.stages.data[stage].attributes.number}</Text>
+          race?.attributes?.stages?.data.length > 1 ? (
+            <StageSelector stages={race?.attributes?.stages?.data} stage={stage} setStage={setStage} />
+          ) : <Text>Stage {race?.attributes?.stages?.data?.[stage]?.attributes?.number}</Text>
         }
       </TView>
       <Divider />
       <TView>
         <DataTable>
             {
-              race.attributes.stages.data[stage].attributes.results.data.map((result, index: number) => {
-                const rider = result.attributes.rider.data
+              race?.attributes?.stages?.data[stage]?.attributes?.results?.data?.map((result, index: number) => {
+                const rider = result?.attributes?.rider?.data
                 return (
-                  <DataTable.Row key={result.id}>
-                    <DataTable.Cell>{result.attributes.position}</DataTable.Cell>
+                  <DataTable.Row key={result?.id}>
+                    <DataTable.Cell>{result?.attributes?.position}</DataTable.Cell>
                     <DataTable.Cell style={{ flex: 5 }}>
                       <View style={styles.riderContainer}>
-                        <Flag isoCode={rider.attributes.country.toLowerCase()} size={24} />
-                        <Text>{rider.attributes.name}</Text>
+                        <Flag isoCode={rider.attributes?.country.toLowerCase()} size={24} />
+                        <Text>{rider.attributes?.name}</Text>
                       </View>
                     </DataTable.Cell>
-                    <DataTable.Cell numeric>{result.attributes.points}</DataTable.Cell>
+                    <DataTable.Cell numeric>{result?.attributes?.points}</DataTable.Cell>
                   </DataTable.Row>
                 )
               })
