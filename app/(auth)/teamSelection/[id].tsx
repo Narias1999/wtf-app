@@ -4,6 +4,7 @@ import {
   ScrollView,
   StyleSheet,
   useColorScheme,
+  RefreshControl
 } from "react-native";
 import {
   Button,
@@ -24,7 +25,6 @@ import { useRouter, useLocalSearchParams } from "expo-router";
 import { useGetRoomByIdQuery, Team, Rider, useStartSeasonMutation } from "../../../api/rooms";
 import { selectUser } from "../../../store/features/auth";
 import { useSelector } from "react-redux";
-import { RefreshControl } from "react-native-gesture-handler";
 import { useUpdateRoomTeamMutation } from "../../../api/roomTeam";
 import AutocompleteRiders from "../../../components/AutocompleteRiders";
 

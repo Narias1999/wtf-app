@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { View, Platform, StatusBar, StyleSheet, KeyboardAvoidingView } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { View, Platform, StatusBar, StyleSheet, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { Button, Text, TextInput } from 'react-native-paper';
 import MembersInvite from '../../components/MembersInvite';
 import { useRouter } from 'expo-router';

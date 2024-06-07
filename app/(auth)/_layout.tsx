@@ -9,7 +9,7 @@ import { selectUser } from '../../store/features/auth';
 import { useGetMyInvitationsQuery } from '../../api/invitations';
 import Colors from '../../constants/Colors';
 import { View } from '../../components/Themed';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect } from 'react';
 
 export default function Layout() {
   const colorScheme = useColorScheme();
@@ -18,8 +18,19 @@ export default function Layout() {
   const route = useRoute()
   const user = useSelector(selectUser);
   const { data: invitations, refetch, isLoading } = useGetMyInvitationsQuery('', {
-    pollingInterval: 10000
+    skip: !user?.email
   });
+
+  useEffect(() => {
+    if (user?.email) {
+      const interval = setInterval(() => {
+        refetch();
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [user?.email]);
+
   const getConfig = (title: string, icon: string) => ({
     tabBarLabel: title,
     tabBarIcon: ({focused, size}: { focused: boolean, size: number }) => (
@@ -43,7 +54,6 @@ export default function Layout() {
     headerStyle: {
       backgroundColor: theme.colors.primary,
     },
-    headerShadowVisible: false,
     headerBackTitleVisible: false,
     headerLeft: () => (
       <View style={styles.notificationsContainer}>

@@ -33,6 +33,7 @@ export default function Login() {
 
   useEffect(() => {
     if (isError) {
+      console.log(loginError);
       setError('Your email or password is wrong, please try again');
     }
   }, [isError]);
@@ -67,6 +68,8 @@ export default function Login() {
     if (!form.password) {
       return setError('Please enter your password');
     }
+
+    console.log("logging with", form)
 
     login({
       identifier: form.email,

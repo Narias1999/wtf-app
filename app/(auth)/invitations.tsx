@@ -1,10 +1,9 @@
-import { StyleSheet, View as NativeView } from "react-native";
+import { StyleSheet, View as NativeView, ScrollView } from "react-native";
 import { Button, Card, Text, Icon, useTheme } from "react-native-paper";
 
 import { View } from "../../components/Themed";
 
 import { useRouter } from "expo-router";
-import { ScrollView } from "react-native-gesture-handler";
 import { Invitation, useGetMyInvitationsQuery, useUpdateInvitationMutation } from "../../api/invitations";
 import { useGetMyRoomsQuery } from "../../api/rooms";
 

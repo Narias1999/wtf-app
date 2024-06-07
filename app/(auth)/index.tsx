@@ -1,10 +1,9 @@
-import { StyleSheet, TouchableOpacity, View as NativeView, RefreshControl } from 'react-native';
+import { StyleSheet, TouchableOpacity, View as NativeView, RefreshControl, ScrollView } from 'react-native';
 import { Button, Card, Text, FAB, Chip, ActivityIndicator } from 'react-native-paper';
 
 import { View } from '../../components/Themed';
 
 import { useRouter } from 'expo-router';
-import { ScrollView } from 'react-native-gesture-handler';
 import { Room, useGetMyRoomsQuery } from '../../api/rooms';
 import { useGetAllRidersQuery } from '../../api/riders';
 import { useEffect } from 'react';
