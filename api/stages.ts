@@ -6,20 +6,18 @@ import { Rider } from './rooms';
 
 export interface Stage {
   id: number,
-  attributes: {
-    number: number,
-    year: number,
-    distance: number,
-    start_location: string
-    end_location: string,
-    terrain: string,
-    date: string
-    results: {
-      data: Result[]
-    },
-    race: {
-      data: Race
-    }
+  number: number,
+  year: number,
+  distance: number,
+  start_location: string
+  end_location: string,
+  terrain: string,
+  date: string
+  results: {
+    data: Result[]
+  },
+  race: {
+    data: Race
   }
 }
 

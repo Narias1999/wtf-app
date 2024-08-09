@@ -5,7 +5,7 @@ import Colors from '../../../../constants/Colors';
 import { useRoute } from '@react-navigation/native';
 import { useGetRoomByIdQuery, Room } from '../../../../api/rooms';
 import { createContext, useEffect, useState } from 'react';
-import { useFocusEffect } from 'expo-router';
+import { useFocusEffect, useNavigation } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TeamResult, useGetTeamResultMutation } from '../../../../api/results';
 interface ISeasonContext {
@@ -19,12 +19,18 @@ export const SeasonContext = createContext({
 } as ISeasonContext);
 
 export default function Season() {
+  const navigation = useNavigation();
+
   const colorScheme = useColorScheme();
   const route = useRoute();
   const [teamsResult, setTeamResult] = useState<TeamResult[] | undefined>()
   const [ getTeamResult ] = useGetTeamResultMutation()
   const { data: season, isLoading } = useGetRoomByIdQuery(route.params?.id as number);
   const colors = Colors[colorScheme ?? 'light'];
+
+  useEffect(() => {
+    navigation.setOptions({ tabBarStyle: { display: 'none' } });
+  }, [navigation]);
 
   const getTeamsResult = async () => {
     const promises = season?.teams.map(team => getTeamResult(team.id))
@@ -63,6 +69,7 @@ export default function Season() {
     }}>
       <Tabs screenOptions={{
         headerTitle: season?.name,
+        headerShown: !!season?.name,
       }}>
         <Tabs.Screen name="leaderboard" options={getConfig('GC', 'flag-checkered')} />
         <Tabs.Screen name="riders" options={getConfig('My Team', 'bike')} />

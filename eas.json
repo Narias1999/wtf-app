@@ -13,6 +13,11 @@
     "production": {}
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios": {
+        "appleId": "nicolasarias870@gmail.com",
+        "ascAppId": "6557078657"
+      }
+    }
   }
 }

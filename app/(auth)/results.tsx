@@ -1,6 +1,6 @@
 import { ActivityIndicator, DataTable, Divider } from "react-native-paper";
-import { useGetRacesQuery } from "../../../api/races";
-import { View, Text } from "../../../components/Themed";
+import { useGetRacesQuery } from "../../api/races";
+import { View, Text } from "../../components/Themed";
 import { ScrollView } from "react-native";
 import { useState } from "react";
 import DropDown from "react-native-paper-dropdown";

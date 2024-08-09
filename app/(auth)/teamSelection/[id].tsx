@@ -94,7 +94,6 @@ function AdminSelection({ teams, refetch }: { teams: Team[], refetch: Function, 
   };
 
   const addCyclist = (cyclist: Rider) => {
-    console.log(cyclist)
     if(selectedRiders.some(item => item.id == cyclist.id)) return
     setSelectedRiders([...selectedRiders, cyclist]);
   };

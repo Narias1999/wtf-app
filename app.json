@@ -17,7 +17,8 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.theindigo.wtf"
+      "bundleIdentifier": "com.worldtourfantasy.app",
+      "buildNumber": "1.0.1"
     },
     "android": {
       "adaptiveIcon": {

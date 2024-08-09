@@ -1,33 +1,47 @@
-import { BaseResponse } from './baseTypes';
-import { api } from './index';
-import { Result } from './results';
-import { Rider } from './rooms';
-import { Stage } from './stages';
+import { BaseResponse } from "./baseTypes";
+import { api } from "./index";
+import { Stage } from "./stages";
 
 export interface Race {
-  id: number,
+  id: number;
   attributes: {
-    Name: string,
-    slug: string,
-    location: string,
+    Name: string;
+    slug: string;
+    location: string;
     stages: {
-      data: Stage[]
-    }
-  }
+      data: Stage[];
+    };
+  };
+}
+
+export interface RaceSimple {
+  Name: string;
+  slug: string;
+  location: string;
+  stages: Stage[];
+  id: number;
+
 }
 
 export const racersApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getRaces: builder.query<BaseResponse<Race[]>, unknown>({
       query: () => ({
-        url: '/races',
+        url: "/races",
         params: {
-          'pagination[pageSize]': 400,
-          'populate[stages][populate][results][populate][rider]': true
-        }
+          "pagination[pageSize]": 400,
+        },
+      }),
+    }),
+    getRaceWithStages: builder.query<RaceSimple, number>({
+      query: (id) => ({
+        url: `/races/${id}/results/`,
       }),
     }),
   }),
 });
 
-export const { useGetRacesQuery } = racersApi;
+export const {
+  useGetRacesQuery,
+  useGetRaceWithStagesQuery,
+} = racersApi;
