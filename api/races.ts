@@ -30,6 +30,7 @@ export const racersApi = api.injectEndpoints({
         url: "/races",
         params: {
           "pagination[pageSize]": 400,
+          "populate[stages][populate][results][populate][rider]": true
         },
       }),
     }),

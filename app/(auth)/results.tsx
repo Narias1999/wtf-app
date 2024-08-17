@@ -52,7 +52,7 @@ export default function Results() {
             <DataTable.Title style={{ flex: 2 }}>Location</DataTable.Title>
           </DataTable.Header>
           {
-            data?.data[race].attributes.stages.data.map((stage) => (
+            data?.data?.[race]?.attributes?.stages?.data?.map((stage) => (
               <DataTable.Row key={stage.id} onPress={()=>router.replace(`/results/stage/${stage.id}`)}>
                 <DataTable.Cell>
                     <Text>{stage.attributes.number}</Text>
