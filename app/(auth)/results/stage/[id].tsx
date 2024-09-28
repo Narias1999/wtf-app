@@ -59,7 +59,7 @@ export default function Results() {
         <Button style={{ borderRadius: 10, marginLeft: 10, zIndex: -2 }} mode="contained" compact onPress={handleSubmit} loading={isLoading || loadingSubmit || status === 'pending'}>Submit</Button>
       </View>
       <View style={{ marginTop: 10, backgroundColor: 'white' }}>
-        <ScrollView>
+        <ScrollView style={{ height: '75%' }}>
           <View>
             <DataTable>
                 <DataTable.Header>
