@@ -4,9 +4,9 @@ import { StyleSheet, KeyboardAvoidingView, Platform, View as TransparentView, To
 import { TextInput, Text, Button, useTheme, Divider } from 'react-native-paper';
 import { View } from '../components/Themed';
 import { useLoginMutation, useGetUserQuery } from '../api/auth';
-import { setAuth } from '../store/features/auth';
-import { useDispatch } from 'react-redux';
-import { useRouter } from 'expo-router';
+import { selectUser, setAuth } from '../store/features/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { Redirect, useRouter } from 'expo-router';
 
 interface LoginForm {
   email: string;
@@ -31,6 +31,7 @@ export default function Login() {
   const [form, setForm] = useState<LoginForm>({... defaultFormValues });
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const user = useSelector(selectUser);
 
   useEffect(() => {
     if (isError) {
@@ -42,7 +43,9 @@ export default function Login() {
   useEffect(() => {
     if (isSuccess && data) {
       dispatch(setAuth(data));
-      getUser()
+      setTimeout(() => {
+        getUser();
+      });
     }
   }, [isSuccess]);
 
@@ -78,6 +81,9 @@ export default function Login() {
     });
   };
 
+  if (user) {
+    return <Redirect href="/" />
+  }
 
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container} >
