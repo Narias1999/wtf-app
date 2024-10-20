@@ -14,9 +14,8 @@ import { View } from "../../../../components/Themed";
 import results from "../../../../data/results.json";
 import { useMemo, useState } from "react";
 import {
-  Race,
-  useGetRacesQuery,
   useGetRaceWithStagesQuery,
+  useGetSimpleRacesQuery,
 } from "../../../../api/races";
 import { Stage } from "../../../../api/stages";
 import AutocompleteInput from "react-native-autocomplete-input";
@@ -58,7 +57,7 @@ function StageSelector({ stages, stage, setStage }: StageSelectorProps) {
 }
 
 function RaceResults({ selectedRace }: { selectedRace: number }) {
-  const { data, isSuccess, isLoading, refetch } =
+  const { data } =
     useGetRaceWithStagesQuery(selectedRace);
   const [stage, setStage] = useState<number>(0);
   if (data) {
@@ -66,15 +65,17 @@ function RaceResults({ selectedRace }: { selectedRace: number }) {
       <>
         <View style={styles.resultHeader}>
           <TView style={styles.resultTitle}>
-            <Flag isoCode={data.location?.toLowerCase()} size={24} />
+            <Flag isoCode={data.location?.toLowerCase()} size={16} />
             <Text>{data.Name}</Text>
           </TView>
           {data.stages?.length > 1 && (
-            <StageSelector
-              stages={data.stages}
-              stage={stage}
-              setStage={setStage}
-            />
+            <View style={{ width: 150 }}>
+              <StageSelector
+                stages={data.stages}
+                stage={stage}
+                setStage={setStage}
+              />
+            </View>
           )}
         </View>
         <Divider />
@@ -88,7 +89,7 @@ function RaceResults({ selectedRace }: { selectedRace: number }) {
                   <DataTable.Cell style={{ flex: 5 }}>
                     <View style={styles.riderContainer}>
                       {
-                        !!rider?.country && <Flag isoCode={rider?.country} size={24} />
+                        !!rider?.country && <Flag isoCode={rider?.country} size={16} />
                       }    
                       <Text>{rider?.name}</Text>
                     </View>
@@ -105,7 +106,7 @@ function RaceResults({ selectedRace }: { selectedRace: number }) {
 }
 
 export default function News() {
-  const { data, isSuccess, isLoading, refetch } = useGetRacesQuery("");
+  const { data } = useGetSimpleRacesQuery("");
   const [raceQuery, setraceQuery] = useState("");
   const [selectedRace, setSelectedRace] = useState<number>();
   const [hideResults, setHideResults] = useState(false);
@@ -122,7 +123,6 @@ export default function News() {
   return (
     <View style={{ flex: 1, paddingHorizontal: 8 }}>
       <View style={{ paddingVertical: 6, zIndex: 100 }}>
-        <Text style={{ fontSize: 16, paddingBottom: 3 }}>Race</Text>
         <AutocompleteInput
           data={filteredRaces}
           value={raceQuery}
@@ -193,6 +193,7 @@ const styles = StyleSheet.create({
   },
   resultHeader: {
     paddingBottom: 2,
+    gap: 4,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",

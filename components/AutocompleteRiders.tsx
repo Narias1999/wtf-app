@@ -70,7 +70,7 @@ export default function AutocompleteRiders ({ onSelect, saveSelection, style }: 
                   maxHeight: 200
                 }}
               >
-                <Flag isoCode={item.country.toLowerCase()} size={24} />
+                <Flag isoCode={item.country.toLowerCase()} size={16} />
                 <Text>{item.name}</Text>
               </View>
             </TouchableOpacity>

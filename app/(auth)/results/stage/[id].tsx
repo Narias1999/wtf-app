@@ -44,7 +44,7 @@ export default function Results() {
       <Card.Title
         titleVariant="titleLarge"
         title={<View style={{ flexDirection: 'row' }}>
-          <Flag isoCode={data?.data?.attributes?.race?.data?.attributes?.location?.toLowerCase() ?? ''} size={24} style={{ marginRight: 10 }}/>
+          <Flag isoCode={data?.data?.attributes?.race?.data?.attributes?.location?.toLowerCase() ?? ''} size={16} style={{ marginRight: 10 }}/>
           <Text>{`${data?.data.attributes.race.data.attributes.Name}: Stage ${data?.data.attributes.number}`}</Text>
         </View>}
       />
@@ -77,7 +77,7 @@ export default function Results() {
                         </DataTable.Cell>
                         <DataTable.Cell style={{ flex: 2 }}>
                           <View style={{ flexDirection: 'row' }}>
-                            <Flag isoCode={rider.country.toLowerCase()} size={24} style={{ marginRight: 10 }}/>
+                            <Flag isoCode={rider.country.toLowerCase()} size={16} style={{ marginRight: 10 }}/>
                             <Text>{rider.name}</Text>
                           </View>
                         </DataTable.Cell>

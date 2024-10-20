@@ -1,11 +1,11 @@
 import { StyleSheet, useColorScheme } from "react-native";
 import { Redirect, Stack, Tabs, router } from "expo-router";
 import { Icon } from "react-native-paper";
-import { IconButton, Text, useTheme, List } from "react-native-paper";
-import { useSelector } from "react-redux";
+import { IconButton, Text, useTheme } from "react-native-paper";
+import { useSelector, useDispatch } from "react-redux";
 import { useRoute } from "@react-navigation/native";
 
-import { selectUser } from "../../store/features/auth";
+import { logout, selectUser } from "../../store/features/auth";
 import { useGetMyInvitationsQuery } from "../../api/invitations";
 import Colors from "../../constants/Colors";
 import { View } from "../../components/Themed";
@@ -15,25 +15,34 @@ export default function Layout() {
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? "light"];
   const theme = useTheme();
+  const dispatch = useDispatch();
   const route = useRoute();
   const user = useSelector(selectUser);
   const {
     data: invitations,
     refetch,
-    isLoading,
+    error,
   } = useGetMyInvitationsQuery("", {
     skip: !user?.email,
   });
 
   useEffect(() => {
-    if (user?.email) {
+    if (!user) {
+      // router.replace("/login");
+    } else if (user?.email) {
       const interval = setInterval(() => {
         refetch();
-      }, 1000);
+      }, 10000);
 
       return () => clearInterval(interval);
     }
   }, [user?.email]);
+
+  useEffect(() => {
+    if (error?.status === 401 && user) {
+      dispatch(logout());
+    }
+  }, [error, user]);
 
   const getConfig = (title: string, icon: string) =>
     ({
@@ -108,7 +117,7 @@ export default function Layout() {
       <Tabs.Screen name="index" options={getConfig("Seasons", "home")} />
       <Tabs.Screen name="profile" options={getConfig("Profile", "account")} />
       <Tabs.Screen
-        name="(season)/[id]"
+        name="(season)"
         options={{
           tabBarButton: () => null,
         }}
@@ -126,7 +135,7 @@ export default function Layout() {
       <Tabs.Screen
         name="results"
         options={
-          user.role?.type === "admin" ? getConfig("Results", "counter") : {}
+          user?.role?.type === "admin" ? getConfig("Results", "counter") : {}
         }
       />
     </Tabs>

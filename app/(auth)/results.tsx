@@ -37,7 +37,7 @@ export default function Results() {
             label: item.attributes.Name,
             value: idx,
             custom: <View style={{ flexDirection: 'row' }}>
-              <Flag isoCode={item.attributes.location.toLowerCase()} size={24}/>
+              <Flag isoCode={item.attributes.location.toLowerCase()} size={16}/>
               <Text style={{ marginLeft: 10 }}>{item.attributes.Name}</Text>
             </View>
           })) ?? []}

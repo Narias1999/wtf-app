@@ -29,7 +29,8 @@ export default function Login() {
   const router = useRouter();
 
   const [form, setForm] = useState<LoginForm>({... defaultFormValues });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (isError) {
@@ -101,8 +102,8 @@ export default function Login() {
               onChangeText={handleUpdateForm('password')}
               mode="outlined"
               label="Password"
-              secureTextEntry
-              right={<TextInput.Icon icon="eye" />}
+              secureTextEntry={!showPassword}
+              right={<TextInput.Icon icon={showPassword ? "eye-off" : "eye"} onPress={() => setShowPassword(!showPassword)} />}
               style={styles.input}
               onSubmitEditing={handleLogin}
             />

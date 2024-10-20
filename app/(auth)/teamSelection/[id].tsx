@@ -54,7 +54,7 @@ const RivalTeam = ({ user, riders }: Team) => {
         }
         {riders?.map((cyclist) => (
           <Chip
-            avatar={<Flag isoCode={cyclist.country.toLowerCase()} size={32} />}
+            avatar={<Flag isoCode={cyclist.country.toLowerCase()} size={24} />}
             key={cyclist.id}
           >
             {cyclist.name}
@@ -156,7 +156,7 @@ function AdminSelection({ teams, refetch }: { teams: Team[], refetch: Function, 
                 key={cyclist.id}
               >
                 <Chip
-                  avatar={<Flag isoCode={cyclist.country.toLowerCase()} size={32} />}
+                  avatar={<Flag isoCode={cyclist.country.toLowerCase()} size={14} />}
                   key={cyclist.id}
                 >
                   {cyclist?.name}

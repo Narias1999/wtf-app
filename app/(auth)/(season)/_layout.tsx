@@ -1,13 +1,13 @@
 import { useColorScheme } from 'react-native';
 import { Tabs } from 'expo-router/tabs';
 import { Icon } from 'react-native-paper';
-import Colors from '../../../../constants/Colors';
+import Colors from '../../../constants/Colors';
 import { useRoute } from '@react-navigation/native';
-import { useGetRoomByIdQuery, Room } from '../../../../api/rooms';
+import { useGetRoomByIdQuery, Room } from '../../../api/rooms';
 import { createContext, useEffect, useState } from 'react';
 import { useFocusEffect, useNavigation } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { TeamResult, useGetTeamResultMutation } from '../../../../api/results';
+import { TeamResult, useGetTeamResultMutation } from '../../../api/results';
 interface ISeasonContext {
   season: Room | undefined;
   isLoading: boolean;
@@ -56,24 +56,26 @@ export default function Season() {
     tabBarInactiveTintColor: colors.text,
   } as any);
 
+  const seasonData = season && teamsResult ? {
+    ...season,
+    teams: season?.teams?.map((seasonTeam, idx) => ({
+      ...seasonTeam,
+      ...teamsResult?.[idx],
+    })) ?? []
+  } : undefined;
+
   return (
     <SeasonContext.Provider value={{
-      season: (season) && teamsResult ? {
-        ...season,
-        teams: season?.teams?.map((seasonTeam, idx) => ({
-          ...seasonTeam,
-          ...teamsResult?.[idx],
-        })) ?? []
-      } : undefined,
+      season: seasonData,
       isLoading
     }}>
       <Tabs screenOptions={{
         headerTitle: season?.name,
         headerShown: !!season?.name,
       }}>
-        <Tabs.Screen name="leaderboard" options={getConfig('GC', 'flag-checkered')} />
-        <Tabs.Screen name="riders" options={getConfig('My Team', 'bike')} />
-        <Tabs.Screen name="stats" options={getConfig('Results', 'chart-bar')} />
+        <Tabs.Screen name="[id]/leaderboard" options={getConfig('GC', 'flag-checkered')} />
+        <Tabs.Screen name="[id]/riders" options={getConfig('My Team', 'bike')} />
+        <Tabs.Screen name="[id]/stats" options={getConfig('Results', 'chart-bar')} />
       </Tabs>
     </SeasonContext.Provider>
   );

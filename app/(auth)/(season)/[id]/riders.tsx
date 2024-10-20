@@ -8,7 +8,8 @@ import { useContext, useMemo } from 'react';
 import { Rider } from '../../../../api/rooms';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../../../store/features/auth';
-import { SeasonContext } from './_layout';
+import { SeasonContext } from '../_layout';
+import { ScrollView } from 'react-native-gesture-handler';
 
 interface RiderPoints {
   name: string;
@@ -26,12 +27,13 @@ export default function News() {
     return null
   }, [season, user]);
 
-  const total = useMemo(() => myTeamData.reduce(
-    (acc: number, curr: RiderPoints) => acc + curr.points, 0), []
-  );
+  const sortedRidersByPoints = useMemo(() => {
+    const riders = riderTeam?.riders ? [...riderTeam.riders] : [];
+    return riders?.sort((a, b) => (b.points ?? 0) - (a.points ?? 0))
+  }, [riderTeam]);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Card style={styles.gcContainer}>
         <Card.Title
           title="MyTeam"
@@ -41,12 +43,12 @@ export default function News() {
         {
           isLoading || !riderTeam ? <Text>Loading...</Text> :
           <DataTable>
-            {riderTeam.riders.map((rider, index: number) => (
+            {sortedRidersByPoints.map((rider, index: number) => (
               <DataTable.Row key={rider.name}>
                 <DataTable.Cell>{index+1}</DataTable.Cell>
                 <DataTable.Cell style={{ flex: 5 }}>
                   <View style={styles.riderContainer}>
-                    <Flag isoCode={rider.country.toLowerCase()} size={24} />
+                    <Flag isoCode={rider.country.toLowerCase()} size={16} />
                     <Text>{rider.name}</Text>
                   </View>
                 </DataTable.Cell>
@@ -61,7 +63,7 @@ export default function News() {
           </DataTable>
         }
       </Card>
-    </View>
+    </ScrollView>
   )
 }
 

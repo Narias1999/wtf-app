@@ -4,8 +4,8 @@ import leaderboardData from '../../../../data/leaderboard.json';
 import { View } from '../../../../components/Themed';
 import { useRoute } from '@react-navigation/native';
 import { Team, useGetRoomByIdQuery } from '../../../../api/rooms';
-import { useContext } from 'react';
-import { SeasonContext } from './_layout';
+import { useContext, useMemo } from 'react';
+import { SeasonContext } from '../_layout';
 
 interface Manager {
   name: string;
@@ -41,8 +41,13 @@ const RaceBanner = () => {
 export default function Leaderboard() {
   const { season } = useContext(SeasonContext);
 
+  const sortedSeasonByPoints = useMemo(() => {
+    const teams = season?.teams ? [...season.teams] : [];
+    return teams?.sort((a, b) => (b.totalPoints ?? 0) - (a.totalPoints ?? 0))
+  }, [season]);
+
   return (
-   <View style={styles.container}>
+   <ScrollView style={styles.container}>
     <Card style={styles.gcContainer}>
       <Card.Title
         title="General Classification"
@@ -50,7 +55,7 @@ export default function Leaderboard() {
         left={() => <Avatar.Icon size={30} icon="flag-checkered" />}
       />
       <DataTable>
-        {season?.teams?.map((manager: Team, index: number) => (
+        {sortedSeasonByPoints.map((manager: Team, index: number) => (
           <DataTable.Row key={manager.user.id}>
             <DataTable.Cell>{index+1}</DataTable.Cell>
             <DataTable.Cell style={{ flex: 5 }}>{manager.user.username}</DataTable.Cell>
@@ -63,7 +68,7 @@ export default function Leaderboard() {
       <Text variant="titleMedium">Upcoming Races</Text>
       <RaceBanner />
     </View>
-   </View>
+   </ScrollView>
   )
 }
 

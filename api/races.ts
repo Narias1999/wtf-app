@@ -34,9 +34,18 @@ export const racersApi = api.injectEndpoints({
         },
       }),
     }),
+    getSimpleRaces: builder.query<BaseResponse<Race[]>, unknown>({
+      query: () => ({
+        url: "/races",
+        params: {
+          "pagination[pageSize]": 400,
+          "populate[stages]": true
+        },
+      }),
+    }),
     getRaceWithStages: builder.query<RaceSimple, number>({
       query: (id) => ({
-        url: `/races/${id}/results/`,
+        url: `/races/${id}/results`,
       }),
     }),
   }),
@@ -45,4 +54,5 @@ export const racersApi = api.injectEndpoints({
 export const {
   useGetRacesQuery,
   useGetRaceWithStagesQuery,
+  useGetSimpleRacesQuery
 } = racersApi;
