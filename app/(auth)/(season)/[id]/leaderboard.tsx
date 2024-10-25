@@ -31,9 +31,9 @@ const RaceBanner = () => {
   return (
     <ScrollView style={styles.racesBanner} horizontal scrollEventThrottle={16}>
       <Race image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNMrWV6qSBzGiTr_4cpwUpO7dSoT8R3SSjtQ&s" title="Santos Tour Down Under"/>
-      <Race image="https://files.slack.com/files-pri/T062E3LL7FE-F07T7U7C7HQ/image.png" title="Cadel Evans Great Ocean Road Race" />
+      <Race image="https://upload.wikimedia.org/wikipedia/en/a/a1/Cadel_Evans_Great_Ocean_Road_Race-logo_2023.png" title="Cadel Evans Great Ocean Road Race" />
       <Race image="https://is1-ssl.mzstatic.com/image/thumb/Purple116/v4/fe/a5/c9/fea5c97e-4b91-4451-9d35-5b082c19884d/AppIcon-0-0-1x_U007emarketing-0-0-0-10-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/1200x600wa.png" title="UAE Tour" />
-      <Race image="https://files.slack.com/files-pri/T062E3LL7FE-F07T533MAA1/image.png" title="Omloop Het Nieuwsblad" />
+      <Race image="https://cdn.mos.cms.futurecdn.net/9mQELnQjNJR97h2uXxpTx6.jpeg" title="Omloop Het Nieuwsblad" />
     </ScrollView>
   )
 }
