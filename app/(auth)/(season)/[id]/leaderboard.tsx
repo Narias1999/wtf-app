@@ -12,17 +12,17 @@ interface Manager {
   points: number;
 };
 
-const Race = () => (
+const Race = ({ image, title }: { image: string, title: string }) => (
   <View style={styles.race}>
     <View>
       <Image
         style={styles.raceImage}
-        source={{uri: 'https://movistarteam.com/wp-content/uploads/2021/02/004-3-1380x920.jpg'}}
+        source={{uri: image}}
       />
     </View>
     <Divider />
     <View style={{ padding: 10 }}>
-      <Text variant='labelLarge'>Tour Down Under</Text>
+      <Text variant='labelLarge'>{title}</Text>
     </View>
   </View>
 )
@@ -30,10 +30,10 @@ const Race = () => (
 const RaceBanner = () => {
   return (
     <ScrollView style={styles.racesBanner} horizontal scrollEventThrottle={16}>
-      <Race />
-      <Race />
-      <Race />
-      <Race />
+      <Race image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNMrWV6qSBzGiTr_4cpwUpO7dSoT8R3SSjtQ&s" title="Santos Tour Down Under"/>
+      <Race image="https://files.slack.com/files-pri/T062E3LL7FE-F07T7U7C7HQ/image.png" title="Cadel Evans Great Ocean Road Race" />
+      <Race image="https://is1-ssl.mzstatic.com/image/thumb/Purple116/v4/fe/a5/c9/fea5c97e-4b91-4451-9d35-5b082c19884d/AppIcon-0-0-1x_U007emarketing-0-0-0-10-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/1200x600wa.png" title="UAE Tour" />
+      <Race image="https://files.slack.com/files-pri/T062E3LL7FE-F07T533MAA1/image.png" title="Omloop Het Nieuwsblad" />
     </ScrollView>
   )
 }
