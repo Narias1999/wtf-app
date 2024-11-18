@@ -6,8 +6,9 @@ import { View } from '../../components/Themed';
 import { useRouter } from 'expo-router';
 import { Room, useGetMyRoomsQuery } from '../../api/rooms';
 import { useGetAllRidersQuery } from '../../api/riders';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import InfoDialog from '../../components/InfoDialog';
 
 const EmptyState = ({ onCreateNew }: { onCreateNew: () => void }) => ( <View style={styles.emptyStateContainer}>
   <Text variant="titleMedium" style={styles.noRoomsText}>You are not part of any room yet.</Text>
@@ -47,6 +48,7 @@ export default function Rooms() {
   useGetAllRidersQuery('');
   const { data: rooms, isLoading, refetch, error } = useGetMyRoomsQuery('');
   const router = useRouter();
+  const [infoDialogType, setInfoDialogType] = useState<undefined | 'auction' | 'budget'>();
 
   useEffect(() => {
     if (isLoading) {
@@ -90,6 +92,21 @@ export default function Rooms() {
             }
           </ScrollView>
         </View>
+        <View style={{
+          padding: 10,
+          gap: 4, 
+          alignItems: 'center'
+        }}>
+          <Text>How to play?</Text>
+          <View style={{
+            flexDirection: 'row',
+            gap: 10
+          }}>
+            <Button onPress={() => setInfoDialogType('auction')}>Auction Model</Button>
+            <Button onPress={() => setInfoDialogType('budget')}>Budget Model</Button>
+          </View>
+        </View>
+        <InfoDialog hideDialog={() => setInfoDialogType(undefined)} type={infoDialogType} visible={!!infoDialogType} />
         <FAB
           icon="plus"
           style={styles.fab}
@@ -135,6 +152,7 @@ const styles = StyleSheet.create({
   fab: {
     position: 'absolute',
     margin: 30,
+    marginBottom: 50,
     right: 0,
     bottom: 0,
   },
