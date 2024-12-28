@@ -38,7 +38,7 @@ export const roomsApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getMyRooms: builder.query<Room[], unknown>({
       providesTags: ['Rooms'],
-      query: () => '/rooms',
+      query: () => '/rooms?sort=updatedAt:desc',
     }),
     getRoomById: builder.query<Room, unknown>({
       query: (id) => `/rooms/${id}`,

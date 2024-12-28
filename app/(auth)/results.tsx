@@ -1,17 +1,33 @@
-import { ActivityIndicator, DataTable, Divider } from "react-native-paper";
+import { ActivityIndicator, Button, DataTable, Divider } from "react-native-paper";
 import { useGetRacesQuery } from "../../api/races";
 import { View, Text } from "../../components/Themed";
 import { ScrollView } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DropDown from "react-native-paper-dropdown";
 import { useRouter } from "expo-router";
 import Flag from "react-native-country-flag";
+import { useGetAllSeasonsQuery } from "../../api/seasons";
 
 export default function Results() {
   const router = useRouter();
   const { data, isSuccess, isLoading, refetch } = useGetRacesQuery('')
-  const [ showDropDown, setShowDropDown ] = useState(false)
-  const [ race, setRace ] = useState(0)
+  const [ showDropDown, setShowDropDown ] = useState(false);
+  const [ showSeasonsDropdown, setShowSeasonsDropdown ] = useState(false);
+  const [selectedSeason, setSelectedSeason] = useState<number | null>(null);
+  const [ race, setRace ] = useState(0);
+  const { data: seasons } = useGetAllSeasonsQuery('');
+
+  useEffect(() => {
+    if (!selectedSeason && seasons?.length) {
+      setSelectedSeason(seasons.find((season) => season.active)?.year || null);
+    }
+  }, [seasons]);
+
+  useEffect(() => {
+    if (selectedSeason) {
+      refetch();
+    }
+  }, [selectedSeason]);
 
   if(isLoading && !data) {
     return <View style={{
@@ -24,6 +40,21 @@ export default function Results() {
   }
   return <View style={{ flex: 1 }}>
     <ScrollView style={{paddingHorizontal: 10, paddingVertical: 10  }}>
+      <View style={{ marginBottom: 15 }}>
+        <DropDown
+          label={"Season"}
+          mode={"outlined"}
+          value={selectedSeason}
+          setValue={setSelectedSeason}
+          list={seasons?.map((season) => ({
+            label: season.year.toString(),
+            value: season.year,
+          })) || []}
+          visible={showSeasonsDropdown}
+          onDismiss={() => setShowSeasonsDropdown(false)}
+          showDropDown={() => setShowSeasonsDropdown(true)}
+        />
+      </View>
       <View>
         <DropDown
           label={"Race"}
