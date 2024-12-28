@@ -5,6 +5,7 @@ import { Button, Text, TextInput } from 'react-native-paper';
 import MembersInvite from '../../components/MembersInvite';
 import { useRouter } from 'expo-router';
 import { useCreateRoomMutation, useGetMyRoomsQuery } from '../../api/rooms';
+import { useGetAllSeasonsQuery } from '../../api/seasons';
 
 type roomForm = {
   name: string,
@@ -22,11 +23,14 @@ export default function NewRoom() {
   const router = useRouter();
   const [createRoom, { data, isSuccess, isLoading,  }] = useCreateRoomMutation();
   const { refetch: refetchRooms } = useGetMyRoomsQuery('');
-  
+  const { data: seasons } = useGetAllSeasonsQuery('');
+
+  const activeSeason = seasons?.find((season) => season.active);
 
   useEffect(() => {
+    console.log(data,'data');
     if(isSuccess) {
-      router.push(`/teamSelection/${data?.id}`);
+      router.push(`/teamSelection/${data?.room?.id}`);
     }
   }, [isSuccess])
 
@@ -38,7 +42,7 @@ export default function NewRoom() {
   }
 
   const handleRoomCreation = async () => {
-    await createRoom(form);
+    await createRoom({ room: form, season: activeSeason });
     await refetchRooms();
   }
 
@@ -47,7 +51,7 @@ export default function NewRoom() {
       <View style={{ paddingTop: statusBarHeight, flex: 1, paddingHorizontal: 10 }}>
         <KeyboardAvoidingView style={styles.container}>
           <View style={styles.titleContainer}>
-            <Text variant="titleLarge">Create a new season</Text>
+            <Text variant="titleLarge">Start the {activeSeason?.year} season</Text>
           </View>
           <TextInput mode="outlined" label="Name" onChangeText={handleUpdateForm('name')} />
           <View style={styles.newMembersSection}>

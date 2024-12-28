@@ -9,6 +9,7 @@ import { useGetAllRidersQuery } from '../../api/riders';
 import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import InfoDialog from '../../components/InfoDialog';
+import { useGetAllSeasonsQuery } from '../../api/seasons';
 
 const EmptyState = ({ onCreateNew }: { onCreateNew: () => void }) => ( <View style={styles.emptyStateContainer}>
   <Text variant="titleMedium" style={styles.noRoomsText}>You are not part of any room yet.</Text>
@@ -26,7 +27,7 @@ const RoomCard = (room: Room) => {
           <Card.Content>
             <NativeView style={styles.cardTitle}>
               <Text variant="titleLarge">{room.name}</Text>
-              <Chip mode="outlined">2024</Chip>
+              <Chip mode="outlined">{room.year}</Chip>
             </NativeView>
             <NativeView style={styles.membersContainer}>
               {
@@ -46,6 +47,7 @@ const RoomCard = (room: Room) => {
 
 export default function Rooms() {
   useGetAllRidersQuery('');
+  useGetAllSeasonsQuery('');
   const { data: rooms, isLoading, refetch, error } = useGetMyRoomsQuery('');
   const router = useRouter();
   const [infoDialogType, setInfoDialogType] = useState<undefined | 'auction' | 'budget'>();
@@ -76,7 +78,7 @@ export default function Rooms() {
     return (
       <View style={{ padding: 10, position: 'relative', flex: 1 }}>
         <View style={styles.titleContainer}>
-          <Text variant="titleLarge">Seassons</Text>
+          <Text variant="titleLarge">Seasons</Text>
         </View>
         <View style={styles.cardsContainer}>
           <ScrollView
