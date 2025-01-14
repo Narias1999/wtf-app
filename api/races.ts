@@ -25,21 +25,28 @@ export interface RaceSimple {
 
 export const racersApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    getRaces: builder.query<BaseResponse<Race[]>, unknown>({
-      query: () => ({
-        url: "/races",
-        params: {
+    getRaces: builder.query<BaseResponse<Race[]>, number | null | undefined>({
+      query: (year) => {
+        const params: Record<string, any> = {
           "pagination[pageSize]": 400,
           "populate[stages][populate][results][populate][rider]": true
-        },
-      }),
+        }
+        if(year) {
+          params['filters[stages][year][$eq]'] = year
+        }
+        return {
+          url: "/races",
+          params,
+        }
+      },
     }),
-    getSimpleRaces: builder.query<BaseResponse<Race[]>, unknown>({
-      query: () => ({
+    getSimpleRaces: builder.query<BaseResponse<Race[]>, number | null | undefined>({
+      query: (year) => ({
         url: "/races",
         params: {
           "pagination[pageSize]": 400,
-          "populate[stages]": true
+          "populate[stages]": true,
+          "filters[stages][year][$eq]": year
         },
       }),
     }),
@@ -52,7 +59,7 @@ export const racersApi = api.injectEndpoints({
 });
 
 export const {
-  useGetRacesQuery,
+  useLazyGetRacesQuery,
   useGetRaceWithStagesQuery,
-  useGetSimpleRacesQuery
+  useLazyGetSimpleRacesQuery
 } = racersApi;

@@ -1,5 +1,5 @@
 import { ActivityIndicator, Button, DataTable, Divider } from "react-native-paper";
-import { useGetRacesQuery } from "../../api/races";
+import { useLazyGetRacesQuery } from "../../api/races";
 import { View, Text } from "../../components/Themed";
 import { ScrollView } from "react-native";
 import { useEffect, useState } from "react";
@@ -10,10 +10,11 @@ import { useGetAllSeasonsQuery } from "../../api/seasons";
 
 export default function Results() {
   const router = useRouter();
-  const { data, isSuccess, isLoading, refetch } = useGetRacesQuery('')
+  const [selectedSeason, setSelectedSeason] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(false)
+  const [trigger, data] = useLazyGetRacesQuery()
   const [ showDropDown, setShowDropDown ] = useState(false);
   const [ showSeasonsDropdown, setShowSeasonsDropdown ] = useState(false);
-  const [selectedSeason, setSelectedSeason] = useState<number | null>(null);
   const [ race, setRace ] = useState(0);
   const { data: seasons } = useGetAllSeasonsQuery('');
 
@@ -23,10 +24,17 @@ export default function Results() {
     }
   }, [seasons]);
 
-  useEffect(() => {
+  const getRaces = async () => {
+    setIsLoading(true)
     if (selectedSeason) {
-      refetch();
+      trigger(selectedSeason);
     }
+    setIsLoading(false)
+  }
+
+  useEffect(() => {
+    setRace(0)
+    getRaces()
   }, [selectedSeason]);
 
   if(isLoading && !data) {
@@ -64,7 +72,7 @@ export default function Results() {
           onDismiss={() => setShowDropDown(false)}
           value={race}
           setValue={setRace}
-          list={data?.data.map((item, idx) => ({
+          list={data?.data?.data.map((item, idx) => ({
             label: item.attributes.Name,
             value: idx,
             custom: <View style={{ flexDirection: 'row' }}>
@@ -83,7 +91,7 @@ export default function Results() {
             <DataTable.Title style={{ flex: 2 }}>Location</DataTable.Title>
           </DataTable.Header>
           {
-            data?.data?.[race]?.attributes?.stages?.data?.map((stage) => (
+            data.data?.data?.[race]?.attributes?.stages?.data?.map((stage) => (
               <DataTable.Row key={stage.id} onPress={()=>router.replace(`/results/stage/${stage.id}`)}>
                 <DataTable.Cell>
                     <Text>{stage.attributes.number}</Text>

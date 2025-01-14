@@ -12,13 +12,15 @@ import Flag from "react-native-country-flag";
 import { View } from "../../../../components/Themed";
 
 import results from "../../../../data/results.json";
-import { useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import {
   useGetRaceWithStagesQuery,
   useGetSimpleRacesQuery,
+  useLazyGetSimpleRacesQuery,
 } from "../../../../api/races";
 import { Stage } from "../../../../api/stages";
 import AutocompleteInput from "react-native-autocomplete-input";
+import { SeasonContext } from "../_layout";
 
 interface StageSelectorProps {
   stages: Stage[];
@@ -106,16 +108,21 @@ function RaceResults({ selectedRace }: { selectedRace: number }) {
 }
 
 export default function News() {
-  const { data } = useGetSimpleRacesQuery("");
+  const { season } = useContext(SeasonContext);
+  const [ trigger, data ] = useLazyGetSimpleRacesQuery();
   const [raceQuery, setraceQuery] = useState("");
   const [selectedRace, setSelectedRace] = useState<number>();
   const [hideResults, setHideResults] = useState(false);
+
+  useEffect(() => {
+    trigger(season?.year)
+  }, [season])
 
   const filteredRaces = useMemo(() => {
     if (!data?.data) {
       return [];
     }
-    return data?.data.filter((race) =>
+    return data?.data.data.filter((race) =>
       race.attributes.Name.toLowerCase().includes(raceQuery.toLowerCase())
     );
   }, [raceQuery, data]);
